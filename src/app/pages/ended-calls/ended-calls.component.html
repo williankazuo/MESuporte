@@ -1,0 +1,80 @@
+<div class="container-ended m-t-40">
+
+  <div class="container-ended__group--title d-flex justify-content-space-between m-b-20">
+    <span class="title-above-search">Chamados <strong>Finalizados</strong></span>
+    <span>Total de <span class="container-ended__group--title__results"><strong>{{list.length}}</strong>
+        resultados</span></span>
+  </div>
+
+  <div class="container-ended__group--search m-b-20 d-flex align-flex-end">
+    <div class="container-ended__group--search__elements--patient m-r-10">
+      <label class="text-label-input">Nome do paciente</label>
+      <input type="text" (keyup.enter)="filterList();" [(ngModel)]="filter.namePatient">
+    </div>
+    <div class="container-ended__group--search__elements--patient m-r-10">
+      <label class="text-label-input">Assunto</label>
+      <input type="text" (keyup.enter)="filterList();" [(ngModel)]="filter.title">
+    </div>
+    <div class="container-ended__group--search__elements--patient m-r-10">
+      <label class="text-label-input">Nome do atendente</label>
+      <input type="text" (keyup.enter)="filterList();" [(ngModel)]="filter.nameClerk">
+    </div>
+    <div class="container-ended__group--search__elements--date m-r-10">
+      <label class="text-label-input">De</label>
+      <div class="container-ended__group--search__elements--date__image">
+        <input type="text" placeholder="DD/MM/AAAA" (keyup.enter)="filterList();" [(ngModel)]="dateFrom" date>
+        <img src="../../../assets/images/calendar/icon_calendar.png">
+      </div>
+    </div>
+    <div class="container-ended__group--search__elements--date m-r-10">
+      <label class="text-label-input">Até</label>
+      <div class="container-ended__group--search__elements--date__image">
+        <input type="text" placeholder="DD/MM/AAAA" (keyup.enter)="filterList();" [(ngModel)]="dateUntil" date>
+        <img src="../../../assets/images/calendar/icon_calendar.png">
+      </div>
+    </div>
+    <div class="container-ended__group--search__elements--button">
+      <button class="btn btn--default" (click)="filterList();">Filtrar</button>
+    </div>
+  </div>
+
+
+  <div class="container-ended__group--table">
+    <table>
+      <thead>
+        <tr>
+          <th width="70px">
+            Tipo
+          </th>
+          <th>
+            Nome do paciente
+          </th>
+          <th>
+            Assuntos
+          </th>
+          <th>
+            Nome do atendente
+          </th>
+          <th width="128px">
+            Data
+          </th>
+          <th width="100px">
+            Hora
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of list" (click)="openCall(item.id, item.type);">
+          <td><img
+              [src]="item.type === callType.Telefone ? '../../../assets/images/ended-calls/icon_call.png' : '../../../assets/images/ended-calls/icon_chat.png'">
+          </td>
+          <td>{{item.namePatient}}</td>
+          <td>{{item.titles?.join(';')}}</td>
+          <td>{{item.nameClerk}}</td>
+          <td>{{item.date}}</td>
+          <td>{{item.hour}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

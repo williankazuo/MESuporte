@@ -1,0 +1,30 @@
+<div class="container-called-subject">
+    <label for="field-called-subject" class="container-called-subject__content--label text-label-input">
+        Assunto do chamado
+    </label>
+
+    <div class="container-called-subject__content--fields m-b-15">
+        <select name="" id="field-called-subject" (change)="selectSubject(subjectId)" [(ngModel)]="subjectId">
+            <option disabled [value]="0">Selecione</option>
+            <option *ngFor="let item of listAllCallSubject" value="{{item.id}}">{{item.descTitle}}</option>
+        </select>
+        <p *ngIf="validSubject" class="text-title-error">Error</p>
+    </div>
+    <div *ngIf="subjectId === null || subjectId === ''" class="container-called-subject__content--fields d-flex m-b-15">
+        <input type="text" id="field-called-subject" class="container-called-subject__content--fields__input m-r-10"
+            (keyup.enter)="addNewSubject(subject)" [(ngModel)]="subject">
+        <button type="button" class="btn btn--default container-called-subject__content--fields__button"
+            (click)="addNewSubject(subject)">
+            Adicionar
+        </button>
+    </div>
+    <div *ngIf="listSubject.length > 0" class="container-called-subject__content--subjects">
+        <div *ngFor="let subject of listSubject; let i = index"
+            class="container-called-subject__content--subjects__item d-inline-flex justify-content-center align-center m-b-10 m-r-10">
+            <p class="container-called-subject__content--subjects__item--text">{{subject.descTitle}}</p>
+            <div class="container-called-subject__content--subjects__item--remove cursor" (click)="removeSubject(i)">
+                <img src="../../../assets/images/subject/X.png" alt="">
+            </div>
+        </div>
+    </div>
+</div>

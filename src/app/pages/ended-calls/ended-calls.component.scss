@@ -1,0 +1,41 @@
+@import '../../../assets/scss/abstract/variables';
+@import '../../../assets/scss/abstract/mixins';
+
+.container-ended {
+  &__group {
+    &--title {
+      &__results {
+        color: $color-blue;
+      }
+    }
+
+    &--search {
+      &__elements {
+
+        &--patient,
+        &--attendant,
+        &--subject {
+          width: 280px;
+        }
+
+        &--date {
+          width: 160px;
+
+          &__image {
+            position: relative;
+
+            img {
+              position: absolute;
+              right: 5px;
+              top: 3px;
+            }
+          }
+        }
+
+        &--button {
+          width: 160px;
+        }
+      }
+    }
+  }
+}

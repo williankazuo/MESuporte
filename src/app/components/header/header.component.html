@@ -1,0 +1,39 @@
+<header class="header">
+    <article class="header__container d-flex align-center justify-content-space-between">
+
+        <article class="header__container__elements--group d-flex align-center">
+
+            <div class="header__container__elements--group--logo p-l-30 p-r-30">
+                <img src="../../../assets/images/header/logo.png" alt="" class="">
+            </div>
+
+            <div class="header__container__elements--group--nav d-flex align-center">
+                <div *ngFor="let menu of menus" [ngClass]="{'active' : menu.active}"
+                    class="header__container__elements--group--nav__item pointer d-flex align-center justify-content-space-around">
+                    <a [routerLink]="['/' + menu.route]">
+                        {{menu.name}}
+                    </a>
+                </div>
+            </div>
+
+        </article>
+
+        <div class="header__container__elements--profile d-flex align-center justify-content-end p-r-30">
+
+            <div class="header__container__elements--profile__group--data text-align-right">
+                <p class="header__container__elements--profile__group--data__welcome">{{welcome}}</p>
+                <p class="header__container__elements--profile__group--data__name">{{userName}}</p>
+            </div>
+
+            <div class="header__container__elements--profile__group--user-img">
+                <img src="../../../assets/images/header/avatar_default.png" alt="" class="">
+            </div>
+
+            <div (click)="logout()" class="header__container__elements--profile__group--exit pointer">
+                <img src="../../../assets/images/header/exit.png" alt="" class="">
+            </div>
+
+        </div>
+
+    </article>
+</header>

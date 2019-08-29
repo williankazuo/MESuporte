@@ -1,0 +1,28 @@
+<div class="home-container">
+  <div class="home-container__group--chat">
+  </div>
+
+
+  <div class="home-container__group--data">
+    <div class="home-container__group--data__content--search m-b-20">
+      <app-search [select]="true" [placeholder]="placeholder" (receiveText)="receiveText($event);"></app-search>
+    </div>
+
+    <div class="home-container__group--data__content--personal p-b-20">
+      <span class="title-above-search"><strong>Dados Pessoais</strong> do Paciente</span>
+      <span class="title-name m-t-10">{{meUser.fullName}}</span>
+    </div>
+
+    <div class="home-container__group--data__content--form m-t-20">
+      <app-form-registration-data #form (receiveMEData)="receiveMEData($event)"
+        (receiveSGHData)="receiveSGHData($event)">
+      </app-form-registration-data>
+    </div>
+  </div>
+
+  <div class="home-container__group--data__content--button d-flex justify-content-center">
+    <div class="home-container__group--data__content--button__content">
+      <button class="btn btn--default" (click)="endCall()">Finalizar chamado</button>
+    </div>
+  </div>
+</div>

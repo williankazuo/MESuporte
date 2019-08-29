@@ -1,0 +1,39 @@
+<section class="container-login d-inline-flex">
+  <article class="container-login__group--bg">
+    <div class="container-login__group--bg__element--imgCentral">
+      <img src="../../../assets/images/login/logo_mesuporte.png">
+    </div>
+    <div class="container-login__group--bg__element--imgBottom text-align-center">
+      <img src="../../../assets/images/login/logo_einstein.png">
+    </div>
+  </article>
+
+  <article class="d-inline-flex align-center container-login__group--content">
+    <div class="container-login__group--content__data">
+      <p class="f-s-24 title-info">Login</p>
+      <p class="text-title-info">Preencha os campos para acessar:</p>
+
+      <div class="container-login__group--content__data__form">
+        <div class="m-t-30 container-login__group--content__data__form__field--user">
+          <label class="text-label-input">Usuário de rede:</label>
+          <input type="text" [(ngModel)]="login.username" (keyup.enter)="authenticate();"
+            placeholder="Insira aqui o seu usuário de rede...">
+        </div>
+        <div class="m-t-30 container-login__group--content__data__form__field--password">
+          <label class="text-label-input">Senha de rede:</label>
+          <input [type]="showPassword? 'text' : 'password'" [(ngModel)]="login.password" (keyup.enter)="authenticate();"
+            placeholder="Insira aqui a sua senha de rede...">
+          <img
+            [src]="!showPassword ? '../../../assets/images/login/icon_olho_cinza.svg' : '../../../assets/images/login/ic_olho-azul.png'"
+            (click)="showPassword = !showPassword" class="">
+          <p class="text-title-error" *ngIf="errorLogin">{{errorMessage}}</p>
+        </div>
+
+        <div class="m-t-30">
+          <button class="btn btn--default" (click)="authenticate();">Entrar</button>
+        </div>
+
+      </div>
+    </div>
+  </article>
+</section>

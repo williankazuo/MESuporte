@@ -1,0 +1,23 @@
+.container-search {
+  &__group {
+    &--input {
+      width: 100%;
+      position: relative;
+
+      img {
+        position: absolute;
+        top: 4px;
+        right: 5px;
+
+      }
+    }
+
+    &--button {
+      width: 160px;
+    }
+
+    &--select {
+      width: 170px;
+    }
+  }
+}

@@ -1,0 +1,24 @@
+table {
+  text-align: left;
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+}
+
+th {
+  padding: 11px 20px 13px 20px;
+  @include textFormatter(13px, $font-semibold, $color-black, $display: table-cell);
+}
+
+td {
+  padding: 14px 20px 14px 20px;
+  border: 1px solid $color-light-gray-border;
+}
+
+thead {
+  background-color: $color-light-gray-border
+}
+
+tbody tr {
+  cursor: pointer;
+}

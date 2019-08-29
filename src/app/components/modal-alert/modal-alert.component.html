@@ -1,0 +1,35 @@
+<section class="container-alert" *ngIf="open"
+  [ngClass]="alert.image == '' ? 'size-modal-default' :  'size-modal-image'">
+  <article class="container-alert__group">
+    <img class="container-alert__group__content--close pointer" src="../../../assets/images/modal-alert/Cancelar.png"
+      (click)="open = !open">
+
+    <div class="container-alert__group__content--title text-align-center">
+      <p [ngClass]="alert.image == '' ? 'title-info' :  'title-modal-image'">{{alert.title}}</p>
+    </div>
+
+    <div class="container-alert__group__content--image text-align-center m-t-20" *ngIf="alert.image">
+      <img src="{{alert.image}}">
+    </div>
+
+    <div class="container-alert__group__content--message m-t-15" *ngIf="!alert.image">
+      {{alert.text}}
+    </div>
+
+    <div class="container-alert__group__content--button d-flex justify-content-center m-t-20"
+      [ngClass]="alert.image == '' ? 'p-t-20' :  'p-t-30'">
+      <div class="container-alert__group__content--button__group--button1"
+        [ngClass]="{'m-r-15': alert.button2Text !== ''}" *ngIf="alert.button1Text">
+        <button class="btn" [ngClass]="alert.button2Text == '' ? 'btn--alert-default' :  'btn--alert-white'"
+          (click)="alert.button1Action()">{{alert.button1Text}}</button>
+      </div>
+      <div class="container-alert__group__content--button__group--button2" *ngIf="alert.button2Text">
+        <button class="btn btn--alert-default" (click)="alert.button2Action()">{{alert.button2Text}}</button>
+      </div>
+    </div>
+  </article>
+</section>
+
+<section class="container-outside" *ngIf="open" (click)="open = !open">
+
+</section>

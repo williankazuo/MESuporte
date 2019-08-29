@@ -1,0 +1,16 @@
+@import '../../../assets/scss/abstract/variables';
+@import '../../../assets/scss/abstract/mixins';
+
+.footer {
+    right: 0;
+    left: 0px;
+    bottom: 0px;
+    padding: 10px;
+    text-align: left;
+    background: $color-blue;
+    @include orientation($pos: absolute, $display: inline-block);
+
+    &__version {
+        color: $color-white;
+    }
+}

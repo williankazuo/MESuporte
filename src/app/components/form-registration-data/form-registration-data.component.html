@@ -1,0 +1,182 @@
+<div class="container-form-data">
+  <div class="container-form-data__group--form  d-flex">
+    <div class="container-form-data__group--form__boxes--left">
+      <span class="title-above-label">SGH</span>
+
+      <div class="container-form-data__group--form__boxes--left__form--holder m-t-20">
+        <div class="form-group-field">
+          <label class="text-label-input">Prontuário</label>
+          <input type="text" [(ngModel)]="sghUser.medicalRecord" disabled>
+        </div>
+        <div class="form-group-field">
+          <label class="text-label-input">Nome</label>
+          <input type="text" [(ngModel)]="sghUser.fullName">
+        </div>
+        <div class="form-group-field" *ngIf="sghUser.documentType === 'CPF'">
+          <label class="text-label-input">CPF</label>
+          <input type="text" [(ngModel)]="sghUser.documentNumber">
+        </div>
+        <div class="form-group-field" *ngIf="sghUser.documentType !== 'CPF'">
+          <label class="text-label-input">Passaporte</label>
+          <input type="text" [(ngModel)]="sghUser.documentNumber">
+        </div>
+
+        <div class="form-group-field d-flex">
+          <div class="p-r-10 input-birth">
+            <label class="text-label-input">Data de Nascimento</label>
+            <input type="text" [(ngModel)]="sghUser.birthDate" date>
+          </div>
+          <div class="p-l-10 input-beside-birth">
+            <label class="text-label-input">Celular</label>
+            <input type="text" [(ngModel)]="sghUser.phoneNumber" phone>
+          </div>
+        </div>
+
+        <div class="form-group-field">
+          <label class="text-label-input">E-mail</label>
+          <input type="text" [(ngModel)]="sghUser.mail">
+        </div>
+
+        <div class="form-group-field">
+          <label class="text-label-input">Sexo</label>
+          <select [(ngModel)]="sghUser.gender">
+            <option value="Male">Masculino</option>
+            <option value="Female">Feminino</option>
+          </select>
+        </div>
+
+        <div class="form-group-field">
+          <label class="text-label-input">Categoria paciente</label>
+          <select [(ngModel)]="sghUser.gender">
+            <option>Masculino</option>
+            <option>Feminino</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="container-form-data__group--form__boxes--left__form--dependent m-t-20"
+        *ngFor="let dependent of sghUser.dependents; let i = index;">
+        <span class="sub-title-above-label">Dependente {{i+1}}</span>
+        <span class="sub-title-above-label-regular m-t-10">{{dependent.name}}</span>
+        <div class="form-group-field m-t-20">
+          <label class="text-label-input">Prontuário</label>
+          <input type="text" [(ngModel)]="dependent.patientIdentifier" disabled>
+        </div>
+        <div class="form-group-field m-t-20">
+          <label class="text-label-input">Nome</label>
+          <input type="text" [(ngModel)]="dependent.name">
+        </div>
+        <div class="form-group-field m-t-20" *ngIf="dependent.documentType === 'CPF'">
+          <label class="text-label-input">CPF</label>
+          <input type="text" [(ngModel)]="dependent.document">
+        </div>
+        <div class="form-group-field m-t-20" *ngIf="dependent.documentType !== 'CPF'">
+          <label class="text-label-input">Passaporte</label>
+          <input type="text" [(ngModel)]="dependent.document">
+        </div>
+        <div class="form-group-field d-flex">
+          <div class="p-r-10 input-birth">
+            <label class="text-label-input">Data de Nascimento</label>
+            <input type="text" [(ngModel)]="dependent.birthDate" date>
+          </div>
+          <div class="p-l-10 input-beside-birth">
+            <label class="text-label-input">Sexo</label>
+            <select [(ngModel)]="dependent.sex">
+              <option value="Male">Masculino</option>
+              <option value="Female">Feminino</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container-form-data__group--form__boxes--right">
+      <span class="title-above-label">MEU EINSTEIN</span>
+
+      <div class="container-form-data__group--form__boxes--right__form--holder m-t-20">
+        <div class="form-group-field">
+          <label class="text-label-input">Prontuário</label>
+          <input type="text" [(ngModel)]="meUser.medicalRecord" disabled>
+        </div>
+        <div class="form-group-field">
+          <label class="text-label-input">Nome</label>
+          <input type="text" [(ngModel)]="meUser.fullName">
+        </div>
+        <div class="form-group-field" *ngIf="meUser.documentType === 'CPF'">
+          <label class=" text-label-input">CPF</label>
+          <input type="text" [(ngModel)]="meUser.documentNumber">
+        </div>
+        <div class="form-group-field" *ngIf="meUser.documentType !== 'CPF'">
+          <label class="text-label-input">Passaporte</label>
+          <input type="text" [(ngModel)]="meUser.documentNumber">
+        </div>
+
+        <div class="form-group-field d-flex">
+          <div class="p-r-10 input-birth">
+            <label class="text-label-input">Data de Nascimento</label>
+            <input type="text" [(ngModel)]="meUser.birthDate" date>
+          </div>
+          <div class="p-l-10 input-beside-birth">
+            <label class="text-label-input">Celular</label>
+            <input type="text" [(ngModel)]="meUser.phoneNumber" phone>
+          </div>
+        </div>
+
+        <div class="form-group-field">
+          <label class="text-label-input">E-mail</label>
+          <input type="text" [(ngModel)]="meUser.mail">
+        </div>
+
+        <div class="form-group-field">
+          <label class="text-label-input">Sexo</label>
+          <select [(ngModel)]="meUser.gender">
+            <option value="Male">Masculino</option>
+            <option value="Female">Feminino</option>
+          </select>
+        </div>
+
+        <div class="container-form-data__group--form__boxes--right__form--dependent m-t-82"
+          *ngFor="let dependent of meUser.dependents; let i = index;">
+          <span class="sub-title-above-label">Dependente {{i+1}}</span>
+          <span class="sub-title-above-label-regular m-t-10">{{dependent.name}}</span>
+          <div class="form-group-field m-t-20">
+            <label class="text-label-input">Prontuário</label>
+            <input type="text" [(ngModel)]="dependent.patientIdentifier" disabled>
+          </div>
+          <div class="form-group-field m-t-20">
+            <label class="text-label-input">Nome</label>
+            <input type="text" [(ngModel)]="dependent.name">
+          </div>
+          <div class="form-group-field m-t-20" *ngIf="dependent.documentType === 'CPF'">
+            <label class="text-label-input">CPF</label>
+            <input type="text" [(ngModel)]="dependent.document">
+          </div>
+          <div class="form-group-field m-t-20" *ngIf="dependent.documentType !== 'CPF'">
+            <label class="text-label-input">Passaporte</label>
+            <input type="text" [(ngModel)]="dependent.document">
+          </div>
+          <div class="form-group-field d-flex">
+            <div class="p-r-10 input-birth">
+              <label class="text-label-input">Data de Nascimento</label>
+              <input type="text" [(ngModel)]="dependent.birthDate" date>
+            </div>
+            <div class="p-l-10 input-beside-birth">
+              <label class="text-label-input">Sexo</label>
+              <select [(ngModel)]="dependent.sex">
+                <option value="Male">Masculino</option>
+                <option value="Female">Feminino</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="container-form-data__group--button d-flex justify-content-center m-t-40">
+    <div class="container-form-data__group--button__container">
+      <button class="btn btn--white">Vincular dependente</button>
+    </div>
+  </div>
+</div>

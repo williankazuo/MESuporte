@@ -1,0 +1,27 @@
+@import '../../../assets/scss/abstract/mixins';
+
+.container-called {
+    border-right: 1px solid $color-light-gray-border;
+    @include container($width: 100%, $p-t-b: 50px, $p-l-r: 30px);
+    @include orientation($pos: initial, $display: block);
+
+    &__content {
+        display: block;
+
+        &__title {
+            @include textFormatter(18px, $font-semibold, $color-black);
+        }
+
+        &__data-group {
+            margin-top: 15px;
+
+            &__fields {
+
+                &--label {
+                    @include orientation($pos: relative, $display: block);
+
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,47 @@
+/* 
+    Arquivo para formatação de TEXTOS usado no sistema
+*/
+
+
+// utilizado nos titulos de inicio de página
+.title-info {
+  @include textFormatter(22px, $font-semibold, $color-blue-bold);
+}
+
+.text-title-info {
+  @include textFormatter(12px, $font-regular, $color-black, 10px);
+}
+
+.text-label-input {
+  margin-bottom: 5px;
+  @include textFormatter(15px, $font-semibold, $color-blue-bold);
+}
+
+.text-title-error {
+  @include textFormatter(12px, $font-regular, $color-red, 5px);
+}
+
+.title-above-label {
+  @include textFormatter(18px, $font-bold, $color-black);
+}
+
+.sub-title-above-label {
+  @include textFormatter(15px, $font-bold, $color-black);
+}
+
+.sub-title-above-label-regular {
+  @include textFormatter(15px, $font-regular, $color-gray-bold);
+}
+
+
+.title-above-search {
+  @include textFormatter(18px, $font-regular, $color-blue-bold);
+}
+
+.title-name {
+  @include textFormatter(24px, $font-regular, $color-gray-bold);
+}
+
+.title-modal-image {
+  @include textFormatter(20px, $font-regular, $color-blue-bold);
+}

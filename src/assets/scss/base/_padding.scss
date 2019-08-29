@@ -1,0 +1,32 @@
+/* #region ############################ SISTEMA DE PADDING ############################ */
+
+// Sistema de padding por classe. Controle de 0 a 100
+@for $i from 0 through 100 {
+
+    // padding-left
+    .p-l-#{$i} {
+        padding-left: #{$i}px !important;
+    }
+
+    // padding-top
+    .p-t-#{$i} {
+        padding-top: #{$i}px !important;
+    }
+
+    // padding-right
+    .p-r-#{$i} {
+        padding-right: #{$i}px !important;
+    }
+
+    // padding-button
+    .p-b-#{$i} {
+        padding-bottom: #{$i}px !important;
+    }
+
+    // padding auto
+    .p-a-#{$i} {
+        padding: #{$i}px !important;
+    }
+}
+
+/* #endregion */

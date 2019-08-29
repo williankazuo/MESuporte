@@ -1,0 +1,10 @@
+/* #region ####################### CONTROLE DE TEXTO ################################ */
+
+// Controle de range de tamanho de fontes
+@for $i from 1 through 100 {
+    .f-s-#{$i} {
+        font-size: #{$i}px;
+    }
+}
+
+/* #endregion */

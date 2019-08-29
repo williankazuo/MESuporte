@@ -1,0 +1,59 @@
+/* #region ############################ VARIAVEIS DE BREAKPOINTS ############################ */
+
+/* Pequenos tablets e grandes smartphones (vista de paisagem) */
+$screen-sm-min: 576px;
+
+/* Pequenos tablets (vista de retrato) */
+$screen-md-min: 768px;
+
+/* Tablets e pequenos desktops */
+$screen-lg-min: 992px;
+
+/* tablets grandes e desktops */
+$screen-xl-min: 1200px;
+
+/* #region */
+
+
+/* #region ############################ GRID ############################################## */
+
+$grid-columns: 12;
+
+/* #endregion */
+
+/* #region ############################ COLOR ############################################## */
+
+$color-blue: #2196F3;
+$color-blue-bold: #005A9C;
+$color-black: #1F1F1F;
+$color-gray: #D5D5D5;
+$color-light-gray: #FAFAFB;
+$color-gray-bold: #6F6F6F;
+$color-light-gray-bold: #C1C1C1;
+$color-light-gray-border: #F1F1F1;
+$color-border-gray: #E5E5E5;
+$color-white: #FFFFFF;
+$color-black: #000000;
+$color-placeholder: #9E9E9E;
+$color-red: #FF0000;
+$color-shadow: rgba(0, 0, 0, 0.26);
+$color-border: rgba(158, 158, 158, 0.25);
+$color-white-background: rgba(241, 241, 241, 0.90);
+
+/* endregion */
+
+/* #region ############################ FONT-WEIGHT ############################################## */
+
+$font-regular: 400;
+$font-semibold: 600;
+$font-bold: 700;
+
+/* endregion */
+
+/* #region ############################ Z-INDEX ############################################## */
+
+$zindex-system: 1;
+$zindex-background: 2;
+$zindex-modal: 3;
+
+/* endregion */

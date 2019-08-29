@@ -1,0 +1,71 @@
+@import '../../../assets/scss/abstract/mixins';
+@import '../../../assets/scss/abstract/variables';
+
+.header {
+    box-shadow: 0px 10px 15px 5px $color-light-gray-border;
+    @include orientation($pos: relative, $display: block);
+
+    &__container {
+        @include container($width: 100%, $height: 80px);
+
+        &__elements {
+
+            &--group {
+                height: 100%;
+                width: calc(100% - 300px);
+                border-top: 5px solid $color-light-gray-border;
+
+                &--nav {
+                    height: 100%;
+
+                    &__item {
+                        height: 100%;
+                        margin: 0 25px;
+                        min-width: 200px;
+                        border-bottom: 5px solid $color-white;
+
+                        a {
+                            @include textFormatter($font-size: 15px, $color: $color-gray-bold, $display: flex);
+                        }
+                    }
+
+                    .active {
+                        border-bottom: 5px solid $color-blue;
+
+                        >a {
+                            color: $color-blue;
+                        }
+                    }
+                }
+
+            }
+
+
+            &--profile {
+                border-top: 5px solid $color-border-gray;
+                border-left: 1px solid $color-border-gray;
+                @include container($width: 300px, $height: 100%);
+
+                &__group {
+
+                    &--data {
+                        &__welcome {
+                            @include textFormatter($font-size: 10px, $color: $color-black);
+                        }
+
+                        &__name {
+                            @include textFormatter($font-size: 10px, $color: $color-blue);
+                        }
+                    }
+
+                    &--data,
+                    &--user-img,
+                    &--exit {
+                        padding: 0 8px;
+                    }
+                }
+
+            }
+        }
+    }
+}

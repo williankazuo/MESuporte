@@ -1,0 +1,54 @@
+@import '../../../assets/scss/abstract/mixins';
+
+.container-login {
+  @include fullSize();
+
+  &__group {
+
+    &--content {
+      width: 420px;
+      padding: 0 50px;
+
+      &__data {
+        width: 100%;
+
+        &__form {
+          &__field {
+            &--password {
+              position: relative;
+
+              img {
+                position: absolute;
+                top: 26px;
+                right: 5px;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &--bg {
+      position: relative;
+      width: calc(100% - 420px);
+      @include backgroundImageFull('../../../assets/images/login/bg_login.png');
+
+      &__element {
+        &--imgCentral {
+          position: absolute;
+          @include fullSize();
+
+          img {
+            @include align(true, true);
+          }
+        }
+
+        &--imgBottom {
+          position: absolute;
+          width: 100%;
+          bottom: 25px;
+        }
+      }
+    }
+  }
+}

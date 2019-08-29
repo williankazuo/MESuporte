@@ -1,0 +1,51 @@
+@import '../../../assets/scss/abstract/variables';
+
+.container-form-data {
+  &__group {
+    &--form {
+      &__boxes {
+
+        &--left,
+        &--right {
+          width: 50%;
+          padding: 30px;
+          border: 1px solid $color-light-gray-border;
+
+          &__form {
+            &--holder {}
+
+            &--dependent {
+              border-top: 1px solid $color-light-gray-border;
+              padding-top: 20px;
+            }
+          }
+        }
+
+        &--left {
+          background-color: $color-light-gray;
+        }
+
+        &--right {
+          background-color: $color-white;
+        }
+
+      }
+    }
+
+    &--button {
+      &__container {
+        width: 260px;
+      }
+    }
+  }
+}
+
+.form-group-field {
+  .input-birth {
+    width: 54%;
+  }
+
+  .input-beside-birth {
+    width: 46%;
+  }
+}

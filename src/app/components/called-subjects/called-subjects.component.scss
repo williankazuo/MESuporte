@@ -1,0 +1,54 @@
+@import '../../../assets/scss/abstract/mixins';
+
+.container-called-subject {
+
+    &__content {
+
+        &--label {
+            @include orientation($pos: relative, $display: block);
+        }
+
+        &--fields {
+
+            &__input {
+                width: 100%;
+                max-width: 375px;
+            }
+
+            &__button {
+                max-width: 100px;
+            }
+        }
+
+        &--subjects {
+
+            &__item {
+                max-width: 225px;
+                margin-right: 10px;
+                border-radius: 5px;
+                @include container ($width: max-content, $height: 30px, $background-color: $color-gray);
+
+                &--text {
+                    margin: 0 10px;
+                    @include ellipse(170px);
+                    @include textFormatter(13px, $font-regular, $color-gray-bold);
+                }
+
+                &--remove {
+                    border-radius: 0 5px 5px 0;
+                    border-left: 1px solid $color-white;
+                    @include container ($width: 35px, $height: 100%, $background-color: $color-light-gray-bold);
+
+                    img {
+                        top: 50%;
+                        transform: translateY(-50%);
+                        margin: 0 auto;
+                        position: relative;
+                        display: block;
+                    }
+                }
+            }
+        }
+
+    }
+}

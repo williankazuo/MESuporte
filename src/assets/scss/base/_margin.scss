@@ -1,0 +1,32 @@
+/* #region ############################ SISTEMA DE MARGINS ############################ */
+
+// Sistema de margin por classe. Controle de 0 a 100
+@for $i from 0 through 100 {
+
+    // margin-left
+    .m-l-#{$i} {
+        margin-left: #{$i}px !important;
+    }
+
+    // margin-top
+    .m-t-#{$i} {
+        margin-top: #{$i}px !important;
+    }
+
+    // margin-right
+    .m-r-#{$i} {
+        margin-right: #{$i}px !important;
+    }
+
+    // margin-button
+    .m-b-#{$i} {
+        margin-bottom: #{$i}px !important;
+    }
+
+    // margin auto
+    .m-a-#{$i} {
+        margin: #{$i}px !important;
+    }
+}
+
+/* #endregion */
