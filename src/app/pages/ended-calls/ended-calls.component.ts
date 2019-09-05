@@ -17,6 +17,7 @@ export class EndedCallsComponent implements OnInit {
   public dateFrom = '';
   public dateUntil = '';
   public callType = CallType;
+  public tableHeader = ['Tipo', 'Nome do Paciente', 'Assuntos', 'Nome do atendente', 'Data', 'Hora'];
   private today = new Date();
 
   constructor(
