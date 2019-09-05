@@ -1,19 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, forkJoin } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 import { API } from '../../consts/environment/api.const';
 import { CalledModel, UploadModel, SubjectModel } from '../../models/new-called/new-called.model';
 import { FilterModel } from '../../models/ended-calls/filter.model';
 import { EndedCallsList } from '../../models/ended-calls/ended-list.model';
+import { CallReset } from '../../consts/ended-calls/callReset.const';
 
 
 @Injectable()
 export class CalledService {
 
+    // criação da propriedade do tipo observavel para 'emitir' as um estado expecifico
+    private resetForm = new BehaviorSubject(CallReset.reset);
+    // propriedade para o componente que a utilizar conseguir se inscrever para receber a atualização do novo estado
+    public resetFormSubscriber = this.resetForm.asObservable();
+
     constructor(
         private http: HttpClient
     ) { }
+
+    /**
+     * metodo responsavel por emitir um estado a todos os componentes que estiver incrito
+     * @param reset propriedade para permitir o reset do formulário
+     */
+    public resetFields(reset: boolean): void {
+        this.resetForm.next(reset);
+    }
 
     /**
      * Método responsavel por registrar um novo chamado
@@ -28,7 +42,12 @@ export class CalledService {
      * @param {UploadModel} upload imagens que estão sendo registradas de acordo com um id de um chamado.
      */
     public registerImagesCalled(upload: UploadModel): Observable<any> {
-        return this.http.post<UploadModel>(API.callSystem + `/api/Called/upload/${upload.idCalled}`, upload.images);
+        // formata os files para formData para envio ao backend
+        const formData = new FormData();
+        upload.images.forEach(file => {
+            formData.append('images', file.file, file.file.name);
+        });
+        return this.http.post<UploadModel>(API.callSystem + `/api/Called/image/${upload.idCalled}`, formData);
     }
 
     /**

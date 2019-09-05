@@ -2,12 +2,7 @@ import { Directive, ElementRef, HostListener, Input, OnInit } from '@angular/cor
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Directive({
-    selector: '[phone]',
-    providers: [{
-        provide: NG_VALUE_ACCESSOR,
-        useExisting: PhoneDirective,
-        multi: true
-    }]
+    selector: '[phone]'
 })
 export class PhoneDirective implements ControlValueAccessor, OnInit {
 
@@ -43,7 +38,6 @@ export class PhoneDirective implements ControlValueAccessor, OnInit {
             phone = inicio + ' ' + meio + '-' + fim;
         }
         $event.target.value = phone;
-        this.onChange(phone);
     }
 
     constructor(

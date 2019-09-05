@@ -4,11 +4,11 @@
     </label>
 
     <div class="container-called-subject__content--fields m-b-15">
-        <select name="" id="field-called-subject" (change)="selectSubject(subjectId)" [(ngModel)]="subjectId">
-            <option disabled [value]="0">Selecione</option>
+        <select name="" id="field-called-subject" (change)="selectSubject(subjectId)" [(ngModel)]="subjectId" [disabled]="readonly">
+            <option disabled hidden [value]="0">Selecione</option>
             <option *ngFor="let item of listAllCallSubject" value="{{item.id}}">{{item.descTitle}}</option>
         </select>
-        <p *ngIf="validSubject" class="text-title-error">Error</p>
+        <p *ngIf="required && listSubject.length === 0" class="text-title-error">Campo obrigatório</p>
     </div>
     <div *ngIf="subjectId === null || subjectId === ''" class="container-called-subject__content--fields d-flex m-b-15">
         <input type="text" id="field-called-subject" class="container-called-subject__content--fields__input m-r-10"
@@ -22,7 +22,7 @@
         <div *ngFor="let subject of listSubject; let i = index"
             class="container-called-subject__content--subjects__item d-inline-flex justify-content-center align-center m-b-10 m-r-10">
             <p class="container-called-subject__content--subjects__item--text">{{subject.descTitle}}</p>
-            <div class="container-called-subject__content--subjects__item--remove cursor" (click)="removeSubject(i)">
+            <div class="container-called-subject__content--subjects__item--remove cursor" (click)="removeSubject(i)" *ngIf="!readonly">
                 <img src="../../../assets/images/subject/X.png" alt="">
             </div>
         </div>

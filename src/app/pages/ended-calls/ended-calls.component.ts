@@ -51,11 +51,11 @@ export class EndedCallsComponent implements OnInit {
         + this.zeroLeft(this.today.getMinutes()) + ':' + this.zeroLeft(this.today.getSeconds());
     } else {
       const dates = this.dateUntil.split('/');
-      this.filter.dateLast = `${dates[2]}-${dates[1]}-${dates[0]}T00:00:00`;
+      this.filter.dateLast = `${dates[2]}-${dates[1]}-${dates[0]}T23:59:59`;
     }
     if (this.dateFrom !== '') {
-      const dates = this.dateUntil.split('/');
-      this.filter.dateLast = `${dates[2]}-${dates[1]}-${dates[0]}T00:00:00`;
+      const dates = this.dateFrom.split('/');
+      this.filter.dateFirst = `${dates[2]}-${dates[1]}-${dates[0]}T00:00:00`;
     }
   }
 

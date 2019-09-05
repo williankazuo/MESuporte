@@ -41,6 +41,11 @@
 }
 
 .form-group-field {
+
+  &--button {
+    margin-top: 115px;
+  }
+
   .input-birth {
     width: 54%;
   }

@@ -32,3 +32,8 @@
     border: 1px solid $color-blue-bold;
   }
 }
+
+button:disabled {
+   cursor: no-drop;
+   opacity: 0.5;
+}

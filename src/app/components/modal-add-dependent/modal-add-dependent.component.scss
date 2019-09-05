@@ -1,0 +1,26 @@
+@import '../../../assets/scss/abstract/mixins';
+
+.container-add-dep {
+  z-index: $zindex-modal;
+  @include align(true, true, fixed);
+  @include container(1178px, max-content, 30px, 30px);
+  box-shadow: 0px 19px 38px $color-shadow;
+
+  &__group {
+    &--content {
+      border-bottom: 1px solid $color-light-gray-border;
+    }
+
+    &--buttons {
+      &__size {
+        &--back {
+          width: 160px;
+        }
+
+        &--add {
+          width: 260px;
+        }
+      }
+    }
+  }
+}

@@ -1,15 +1,9 @@
 import { Directive, ElementRef, HostListener, Input, OnInit } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Directive({
-    selector: '[date]',
-    providers: [{
-        provide: NG_VALUE_ACCESSOR,
-        useExisting: DateDirective,
-        multi: true
-    }]
+    selector: '[date]'
 })
-export class DateDirective implements ControlValueAccessor, OnInit {
+export class DateDirective implements OnInit {
     onTouched: any;
     onChange: any;
 
@@ -36,7 +30,6 @@ export class DateDirective implements ControlValueAccessor, OnInit {
             birth = inicio + '/' + meio + '/' + fim;
         }
         $event.target.value = birth;
-        this.onChange(birth);
     }
 
     constructor(

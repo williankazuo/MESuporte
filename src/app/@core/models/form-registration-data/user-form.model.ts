@@ -12,6 +12,7 @@ export class DependentUserMeuEinsteinModel {
     documentNumber: string;
     sex: number;
     profileId: string;
+    _sex: string;
 
     constructor() {
         this.dependentId = '';
@@ -23,10 +24,11 @@ export class DependentUserMeuEinsteinModel {
         this.mail = '';
         this.name = '';
         this.nameMother = '';
-        this.documentType = '';
+        this.documentType = 'CPF';
         this.documentNumber = '';
         this.sex = 0;
         this.profileId = '';
+        this._sex = '';
     }
 }
 
@@ -50,6 +52,10 @@ export class UserRegistrationModel {
     addressNumber: string;
     medicalRecord: string;
     addressComplement: string;
+    passport: string;
+    vip: boolean;
+    idTable: number;
+    descStatusSocial: string;
 
     constructor() {
         this.id = '';
@@ -58,7 +64,7 @@ export class UserRegistrationModel {
         this.name = '';
         this.lastName = '';
         this.fullName = '';
-        this.documentType = '';
+        this.documentType = 'CPF';
         this.documentNumber = '';
         this.phoneNumber = '';
         this.dependents = new Array<DependentUserMeuEinsteinModel>();
@@ -71,5 +77,9 @@ export class UserRegistrationModel {
         this.addressNumber = '';
         this.medicalRecord = '';
         this.addressComplement = '';
+        this.passport = '';
+        this.vip = false;
+        this.idTable = 0;
+        this.descStatusSocial = '';
     }
 }

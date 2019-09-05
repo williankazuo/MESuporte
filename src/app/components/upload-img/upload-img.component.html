@@ -1,28 +1,28 @@
 <article class="container-upload">
-    <input #fileInput type="file" (change)="addPicture($event)" accept=".svg,.gif,.jpg,.jpeg,.png,"
-        style="display: none">
-    <label for="" class="container-upload__content text-label-input">Anexar Imagem</label>
-    <div appDragDrop (onFileDropped)="fileDropped($event)"
-        class="container-upload__content--upload d-flex justify-content-center align-center pointer"
-        (click)="fileInput.value = null; fileInput.click()" [ngClass]="{'haveImage': previewImages.length > 0}">
-        <div class="container-upload__content--upload__group text-align-center"
-            [ngClass]="{'haveImage__container': previewImages.length > 0}">
-            <img src="../../../assets/images/upload/camera.png" class="m-r-15 m-l-15" alt="">
-            <p class="container-upload__content--upload__group__text f-s-15">
-                Arraste a imagem ou
-                <span class="container-upload__content--upload__group__text--link">clique aqui</span>
-                para fazer upload
-            </p>
-        </div>
+  <input #fileInput type="file" (change)="addPicture($event)" accept=".svg,.gif,.jpg,.jpeg,.png," style="display: none">
+  <label for="" class="container-upload__content text-label-input">Anexar Imagem</label>
+  <div appDragDrop (onFileDropped)="fileDropped($event)"
+    class="container-upload__content--upload d-flex justify-content-center align-center pointer"
+    (click)="fileInput.value = null; fileInput.click()"
+    [ngClass]="[!bigger ? 'regularUpload' : 'biggerUpload', (previewImages.length > 0 && !bigger) ? 'haveImageRegular' : '', (previewImages.length > 0 && bigger) ? 'haveImageBigger' : '' ]">
+    <div class="container-upload__content--upload__group text-align-center"
+      [ngClass]="{'d-flex align-center': previewImages.length > 0}">
+      <img src="../../../assets/images/upload/camera.png" class="m-r-15 m-l-15" alt="">
+      <p class="container-upload__content--upload__group__text f-s-15">
+        Arraste a imagem ou
+        <span class="container-upload__content--upload__group__text--link">clique aqui</span>
+        para fazer upload
+      </p>
     </div>
-    <div *ngIf="previewImages.length > 0"
-        class="container-upload__content--preview d-flex justify-content-center align-center flex-flow-wrap m-t-15">
-        <div class="container-upload__content--preview__group m-r-10 m-l-10"
-            *ngFor="let image of previewImages; let i = index">
-            <img class="container-upload__content--preview__group--img-preview" src="{{image.name}}"
-                (click)="openPreview(item.number);">
-            <img class="container-upload__content--preview__group--remove-img pointer"
-                src="../../../assets/images/upload/btn_x.png" (click)="deleteImage(index);">
-        </div>
+  </div>
+  <div *ngIf="previewImages.length > 0"
+    class="container-upload__content--preview d-flex justify-content-center align-center flex-flow-wrap m-t-15">
+    <div class="container-upload__content--preview__group m-r-10 m-l-10"
+      *ngFor="let image of previewImages; let i = index">
+      <img class="container-upload__content--preview__group--img-preview" src="{{image.name}}"
+        (click)="openPreview(item.number);">
+      <img class="container-upload__content--preview__group--remove-img pointer"
+        src="../../../assets/images/upload/btn_x.png" (click)="deleteImage(index);">
     </div>
+  </div>
 </article>
