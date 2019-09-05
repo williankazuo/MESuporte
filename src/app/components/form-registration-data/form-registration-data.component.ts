@@ -229,10 +229,9 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
    */
   private updateDataPatientME(): void {
     // this.emitUserData();
-    const meUser = this.revertData(this.meUser);
+    const meUser = this.revertData(JSON.parse(JSON.stringify(this.meUser)));
     this._patientDataService.updateDataME(meUser)
       .subscribe(response => {
-        this.meUser = this.formatData(response);
         this.configureSuccess();
         this._modalAlertService.openAlertModal();
       }, error => {
@@ -249,7 +248,6 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
     siafUser.gender = GenderEnumSIAF[siafUser.gender];
     this._patientDataService.updateDataSIAF(siafUser)
       .subscribe(response => {
-        this.siafUser = this.formatData(this.siafUser);
         this.configureSuccess();
         this._modalAlertService.openAlertModal();
       }, error => {
