@@ -40,7 +40,7 @@ export class CPFDirective implements ControlValueAccessor, OnInit {
             cpf = inicio + '.' + meio + '.' + fim + '-' + ultimo;
         }
         $event.target.value = cpf;
-        this.onChange(cpf);
+        // this.onChange(cpf);
     }
 
     constructor(
