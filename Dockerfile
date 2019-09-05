@@ -1,4 +1,4 @@
-FROM node:8-alpine
+FROM node:10-alpine
 ARG deploy_env='dev'
 RUN npm install -g @angular/cli@8.2.0
 WORKDIR /web
@@ -9,7 +9,7 @@ RUN npm install
 
 ENV DEPLOY_ENV ${deploy_env}
 
-RUN ng build --env=$DEPLOY_ENV
+RUN ng build --configuration $DEPLOY_ENV
 
 FROM nginx:1.14-alpine
 
