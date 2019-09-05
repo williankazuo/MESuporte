@@ -81,9 +81,10 @@ export class EndedCallsComponent implements OnInit {
   public openCall(id: number, type: string) {
     if (type === this.callType.Telefone) {
       this._router.navigateByUrl(Routes.new_called + '/' + id);
-    } else {
-      this._router.navigateByUrl(Routes.home + '/' + id);
     }
+    // else {
+    //   this._router.navigateByUrl(Routes.home + '/' + id);
+    // }
   }
 
 
