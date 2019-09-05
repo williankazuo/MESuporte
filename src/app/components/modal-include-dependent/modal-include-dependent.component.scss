@@ -1,0 +1,52 @@
+@import '../../../assets/scss/abstract/mixins';
+
+.container-dependent {
+  z-index: $zindex-modal;
+  @include align(true, true, fixed);
+  @include container(1178px, max-content, 30px, 30px);
+  box-shadow: 0px 19px 38px $color-shadow;
+
+  &__group {
+    &--subtitle {
+      &__button {
+        width: 260px;
+      }
+    }
+
+    &--search,
+    &--bind {
+
+      &__button {
+        width: 160px;
+      }
+    }
+
+    &--form {
+      &__size {
+        &--medical {
+          width: 178px;
+        }
+
+        &--name {
+          width: 380px;
+        }
+
+        &--cpf,
+        &--passport {
+          width: 250px;
+        }
+      }
+    }
+
+    &--table {
+      border-bottom: 1px solid $color-light-gray-border;
+      border-top: 1px solid $color-light-gray-border;
+      padding: 30px 0px;
+    }
+  }
+}
+
+.form-group-field--label-check--input {
+  z-index: $zindex-modal;
+  @include align(true, true, absolute);
+}

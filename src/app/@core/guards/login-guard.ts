@@ -8,7 +8,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AuthenticationService } from '../services/authentication/login.service';
-import { MenuService } from '../services/header/menu.service';
 import { Routes } from '../consts/routes/routes.const';
 
 @Injectable()
@@ -30,7 +29,6 @@ export class LoginGuard implements CanActivate {
     canActivate(
         _next: ActivatedRouteSnapshot,
         _state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-
         window.scrollTo(0, 0);
 
         this.routes = _state.url.split('/');

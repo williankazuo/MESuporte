@@ -1,1 +1,57 @@
-<p>modal-add-dependent works!</p>
+<section class="container-add-dep" *ngIf="open">
+  <span class="title-info">Adicionar novo dependente</span>
+
+  <div class="container-add-dep__group--content d-flex m-t-20 p-b-20">
+    <div class="grid-lg-8">
+      <div class="form-group-field d-flex m-t-0">
+        <div class="grid-lg-6 p-r-10">
+          <label class="text-label-input">Prontuário</label>
+          <input type="text" placeholder="" disabled>
+        </div>
+        <div class="grid-lg-6 p-l-10">
+          <label class="text-label-input">Nome</label>
+          <input type="text" placeholder="Digite aqui o nome do dependente..." [(ngModel)]="newDependent.name">
+        </div>
+      </div>
+      <div class="form-group-field d-flex">
+        <div class="grid-lg-6 p-r-10">
+          <label class="text-label-input">CPF</label>
+          <input type="text" placeholder="XXX.XXX.XXX-XX" [(ngModel)]="newDependent.documentNumber" cpf>
+        </div>
+        <div class="grid-lg-6 p-l-10">
+          <label class="text-label-input">Passaporte</label>
+          <input type="text" placeholder="XXXXXXXXXXX" [(ngModel)]="newDependent.passport">
+        </div>
+      </div>
+      <div class="form-group-field d-flex">
+        <div class="grid-lg-6 p-r-10">
+          <label class="text-label-input">Data de nascimento</label>
+          <input type="text" placeholder="XX/XX/XXXX" [(ngModel)]="birthDate" date>
+        </div>
+        <div class="grid-lg-6 p-l-10">
+          <label class="text-label-input">Sexo</label>
+          <select [(ngModel)]="newDependent.sex">
+            <option [value]="genderEnum.Male">Masculino</option>
+            <option [value]="genderEnum.Female">Feminino</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="grid-lg-4 m-l-20">
+      <app-upload-img (insertedImages)="receiveImages($event)" [bigger]="true"></app-upload-img>
+    </div>
+  </div>
+
+  <div class="container-add-dep__group--buttons d-flex justify-content-space-between m-t-20">
+    <div class="container-add-dep__group--buttons__size--back">
+      <button class="btn btn--white" (click)="backModal();">Voltar</button>
+    </div>
+    <div class="container-add-dep__group--buttons__size--add">
+      <button class="btn btn--default" (click)="addDependent();">Adicionar</button>
+    </div>
+  </div>
+</section>
+
+<section class=" container-outside" *ngIf="open" (click)="open = !open">
+
+</section>

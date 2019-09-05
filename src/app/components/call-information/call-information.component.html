@@ -5,22 +5,21 @@
 
     <div class="container-called__content">
         <div class="container-called__content__data-group">
-            <app-called-subjects (insertedSubject)="receiveSubject($event)"></app-called-subjects>
+            <app-called-subjects (insertedSubject)="receiveSubject($event)" [required]="required"
+                [receivedListSubject]="called.observation.titles">
+            </app-called-subjects>
         </div>
 
         <div class="container-called__content__data-group">
             <label for="obs"
                 class="container-called__content__data-group__fields--label text-label-input">Observação</label>
-            <textarea class="" id="obs" [(ngModel)]="called.observation.text"></textarea>
+            <textarea class="" id="obs" [(ngModel)]="called.observation.text" [disabled]="readonly"></textarea>
+            <p *ngIf="required && called.observation.text.length === 0" class="text-title-error">Campo obrigatório</p>
         </div>
 
+        <!-- Adicionar input nesse cara -->
         <div class="container-called__content__data-group">
             <app-upload-img (insertedImages)="receiveImages($event)"></app-upload-img>
-        </div>
-
-
-        <div class="container-called__content__data-group">
-            <button (click)="testeSupremo()" type="button">Salve parça</button>
         </div>
     </div>
 

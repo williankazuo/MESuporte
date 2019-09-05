@@ -16,6 +16,10 @@ import { LoginGuard } from './@core/guards/login-guard';
 import { PatientDataService } from './@core/services/patient-data/patient-data.service';
 import { LoadingService } from './@core/services/loading/loading.service';
 import { CalledService } from './@core/services/called/called.service';
+import { ModalAddDependentService } from './@core/services/modal-add-dependent/modal-add-dependent-service';
+import { ValidateCPFService } from './@core/services/utils/validatecpf.service';
+import { DependentService } from './@core/services/dependents/dependent.service';
+import { CPFMaskService } from './@core/services/utils/cpfmask.service';
 
 @NgModule({
   declarations: [
@@ -35,6 +39,10 @@ import { CalledService } from './@core/services/called/called.service';
     PatientDataService,
     LoadingService,
     CalledService,
+    ModalAddDependentService,
+    ValidateCPFService,
+    DependentService,
+    CPFMaskService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

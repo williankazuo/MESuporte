@@ -1,4 +1,4 @@
-<div class="container-ended m-t-40">
+<div class="container-ended">
 
   <div class="container-ended__group--title d-flex justify-content-space-between m-b-20">
     <span class="title-above-search">Chamados <strong>Finalizados</strong></span>
@@ -6,7 +6,7 @@
         resultados</span></span>
   </div>
 
-  <div class="container-ended__group--search m-b-20 d-flex align-flex-end">
+  <div class="container-ended__group--search p-b-20 d-flex align-flex-end">
     <div class="container-ended__group--search__elements--patient m-r-10">
       <label class="text-label-input">Nome do paciente</label>
       <input type="text" (keyup.enter)="filterList();" [(ngModel)]="filter.namePatient">
@@ -39,7 +39,7 @@
   </div>
 
 
-  <div class="container-ended__group--table">
+  <div class="container-ended__group--table m-t-20">
     <table>
       <thead>
         <tr>

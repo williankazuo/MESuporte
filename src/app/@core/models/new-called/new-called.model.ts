@@ -17,7 +17,7 @@ export class ObservationModel {
  * Model de envio para o backend, relacionado ao crud de chamados
  */
 export class CalledModel {
-    idClerk: number;
+    idClerk: string;
     idChat: number;
     idStatus: number;
     nameClerk: string;
@@ -27,7 +27,7 @@ export class CalledModel {
     observation: ObservationModel;
 
     constructor() {
-        this.idClerk = 0;
+        this.idClerk = '';
         this.idChat = 0;
         this.idStatus = 0;
         this.nameClerk = '';

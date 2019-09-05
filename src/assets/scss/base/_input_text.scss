@@ -11,6 +11,16 @@ select {
   font-size: 15px;
 }
 
+input,
+textarea,
+select {
+  &:disabled {
+    cursor: no-drop;
+    color: rgb(84, 84, 84);
+    background-color: rgb(235, 235, 228);
+  }
+}
+
 /* #endregion */
 
 /* #region ####################### INPUT DE TEXTO ################################ */

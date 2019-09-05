@@ -27,7 +27,8 @@ export class HomeCalledComponent implements OnInit {
     private _patientDataService: PatientDataService,
     private _modalAlertService: ModalAlertService,
     private _route: ActivatedRoute,
-    private _calledService: CalledService) { }
+    private _calledService: CalledService
+  ) { }
 
   ngOnInit() {
     this._route.params.subscribe(params => {
@@ -44,7 +45,7 @@ export class HomeCalledComponent implements OnInit {
    * Método responsável por receber o texto do input por output.
    * Parâmetro [0] é o tipo de pesquisa, e o [1] o valor da pesquisa.
    */
-  public receiveText(value: any) {
+  public receiveText(value: any): void {
     this._patientDataService.searchData(value[0], value[1]);
   }
 
@@ -52,7 +53,7 @@ export class HomeCalledComponent implements OnInit {
    * Método responsável por receber os dados do usuário do meu einstein por output.
    * @param data Dados do usuário.
    */
-  public receiveMEData(data: UserRegistrationModel) {
+  public receiveMEData(data: UserRegistrationModel): void {
     this.meUser = data;
   }
 
@@ -60,14 +61,14 @@ export class HomeCalledComponent implements OnInit {
    * Método responsável por receber os dados do usuário do SGH por output.
    * @param data Dados do usuário.
    */
-  public receiveSGHData(data: UserRegistrationModel) {
+  public receiveSIAFData(data: UserRegistrationModel): void {
     this.sghUser = data;
   }
 
   /**
    * Método responsável por finalizar um chamado.
    */
-  public endCall() {
+  public endCall(): void {
     this.form.emitUserData();
     this._patientDataService.updateDataME(this.meUser).subscribe(response => {
       this.configureSuccess();
@@ -81,7 +82,7 @@ export class HomeCalledComponent implements OnInit {
   /**
    * Método responsável por configurar o modal de alerta de sucesso com imagem.
    */
-  public configureSuccess() {
+  public configureSuccess(): void {
     const alertConfig = new ModalAlert();
     alertConfig.title = 'Chamado finalizado com sucesso!';
     alertConfig.button1Text = 'OK';
@@ -95,7 +96,7 @@ export class HomeCalledComponent implements OnInit {
   /**
    * Método responsável por configurar o modal de alerta de erro com imagem. E tentar novamente chamando o método novamente.
    */
-  public configureError() {
+  public configureError(): void {
     const alertConfig = new ModalAlert();
     alertConfig.title = 'Algo deu errado ao tentar finalizar o chamado. Tente novamente.';
     alertConfig.button1Text = 'Tentar novamente';
@@ -110,7 +111,7 @@ export class HomeCalledComponent implements OnInit {
    * Método responsável por buscar o chamado por ID e preencher os campos automaticamente.
    * @param id id do chamado.
    */
-  public getCallById(id: number) {
+  public getCallById(id: number): void {
     this._calledService.getCallById(id).subscribe(response => {
       this.receiveText([SearchType.prontuario, response.medicalRecord]);
     });

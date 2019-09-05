@@ -2,6 +2,8 @@
 @import '../../../assets/scss/abstract/mixins';
 
 .container-ended {
+  margin: 40px 30px;
+  
   &__group {
     &--title {
       &__results {
@@ -10,6 +12,8 @@
     }
 
     &--search {
+      border-bottom: 1px solid $color-light-gray-border;
+
       &__elements {
 
         &--patient,

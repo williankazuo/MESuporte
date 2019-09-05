@@ -39,6 +39,33 @@ export class PatientDataService {
         return this.http.put<UserRegistrationModel>(API.callSystem + '/api/ExternalServices/me', user);
     }
 
+    /**
+     * Método responsável por buscar os dados do paciente pelo documento.
+     * Este método busca os dados do SIAF.
+     * @param document documento
+     */
+    public getByDocumentSIAF(document: string): Observable<UserRegistrationModel> {
+        return this.http.get<UserRegistrationModel>(API.callSystem + `/api/ExternalServices/siaf/${document}/document`);
+    }
+
+    /**
+     * Método responsável por buscar os dados do paciente pelo prontuário.
+     * Este método busca os dados do SIAF.
+     * @param medicalRecord prontuário
+     */
+    public getByMedicalRecordSIAF(medicalRecord: string): Observable<UserRegistrationModel> {
+        return this.http.get<UserRegistrationModel>(API.callSystem + `/api/ExternalServices/siaf/${medicalRecord}/medicalRecord`);
+    }
+
+
+    /**
+     * Método responsável por atualizar os dados do paciente do SIAF.
+     * @param user modelo de dados do usuário.
+     */
+    public updateDataSIAF(user: UserRegistrationModel): Observable<UserRegistrationModel> {
+        return this.http.put<UserRegistrationModel>(API.callSystem + '/api/ExternalServices/siaf', user);
+    }
+
 
     /**
      * Método responsável por emitir dois valores para preencher o formulário de dados do paciente.
@@ -48,6 +75,4 @@ export class PatientDataService {
     public searchData(typeSearch: string, value: string) {
         this.emitterSearch.emit([typeSearch, value]);
     }
-
-
 }
