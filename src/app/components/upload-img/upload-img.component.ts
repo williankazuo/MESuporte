@@ -1,12 +1,13 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnDestroy, AfterViewInit } from '@angular/core';
 import { PreviewFileModel, FileModel } from 'src/app/@core/models/upload/upload.model';
+import { CalledService } from 'src/app/@core/services/called/called.service';
 
 @Component({
   selector: 'app-upload-img',
   templateUrl: './upload-img.component.html',
   styleUrls: ['./upload-img.component.scss']
 })
-export class UploadImgComponent implements OnInit {
+export class UploadImgComponent implements OnInit, OnDestroy, AfterViewInit {
 
   /** Saida de dados para retornar ao componente pai a lista de imagens inseridad */
   @Output() insertedImages = new EventEmitter<Array<FileModel>>();
@@ -14,11 +15,18 @@ export class UploadImgComponent implements OnInit {
   /** Entrada de dados tipo files, contendo as imagens */
   @Input() files: Array<File>;
 
+  /** Entrada de dados para maiores modais */
+  @Input() bigger = false;
+
   public previewImages: Array<PreviewFileModel>;
 
   private filesImages: Array<FileModel>;
 
-  constructor() { }
+  private unsubscribe: any;
+
+  constructor(
+    private _calledService: CalledService
+  ) { }
 
   ngOnInit() {
     this.files = [];
@@ -30,6 +38,19 @@ export class UploadImgComponent implements OnInit {
         this.setPreviewImage(file);
       });
     }
+  }
+
+  /**
+   * Metodo Acionado apos a conclusão da exibição do componente, ativando a incrição do componente
+   * para a que o mesmo saiba quando será necessário limpar/resetar os campos do formulário.
+   */
+  ngAfterViewInit() {
+    this.unsubscribe = this._calledService.resetFormSubscriber.subscribe((context: boolean) => {
+      if (context) {
+        this.previewImages = new Array<PreviewFileModel>();
+        this.filesImages = new Array<FileModel>();
+      }
+    });
   }
 
   /**
@@ -93,6 +114,13 @@ export class UploadImgComponent implements OnInit {
     this.previewImages.splice(index, 1);
 
     this.insertedImages.emit(this.filesImages);
+  }
+
+  /**
+   * Finaliza a incrição do componente, quando o mesmo é 'destruido'
+   */
+  ngOnDestroy() {
+    this.unsubscribe.unsubscribe();
   }
 
 }

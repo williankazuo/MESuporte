@@ -14,7 +14,7 @@
 
 .text-label-input {
   margin-bottom: 5px;
-  @include textFormatter(15px, $font-semibold, $color-blue-bold);
+  @include textFormatter(14px, $font-semibold, $color-blue-bold);
 }
 
 .text-title-error {

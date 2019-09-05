@@ -30,11 +30,11 @@ export class LoginPageComponent implements OnInit {
    * Método responsável por logar o usuário no sistema.
    * Em caso de sucesso, definir usuário logado, e navegar para a página principal.
    */
-  public authenticate() {
+  public authenticate(): void {
     this._authenticationService.authenticate(this.login).subscribe(response => {
       this.errorLogin = false;
       this._authenticationService.setCurrentUser(response);
-      this._router.navigateByUrl('meu-einstein-suporte');
+      this._router.navigateByUrl('meu-einstein-suporte/novo-chamado');
     }, error => {
       if (error.status === 500) {
         this.errorMessage = 'Tivemos um problema. Tente novamente mais tarde.';
@@ -51,7 +51,7 @@ export class LoginPageComponent implements OnInit {
   /**
    * Método responsável por configurar o que vai ser exibido no modal de alerta.
    */
-  private configureModal() {
+  private configureModal(): void {
     const alertConfig = new ModalAlert();
     alertConfig.title = 'Aviso';
     alertConfig.button1Text = 'OK';

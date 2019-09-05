@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, AfterViewInit, OnDestroy } from '@angular/core';
 
 import { CalledModel, UploadModel, SubjectModel } from 'src/app/@core/models/new-called/new-called.model';
 import { FileModel } from 'src/app/@core/models/upload/upload.model';
@@ -9,46 +9,82 @@ import { CalledService } from 'src/app/@core/services/called/called.service';
   templateUrl: './call-information.component.html',
   styleUrls: ['./call-information.component.scss']
 })
-export class CallInformationComponent implements OnInit {
+export class CallInformationComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  /** Propriedade para receber do componente pai as informações de um chamado */
+  @Input()
+  set receivedCalled(receivedCalled: CalledModel) {
+    // condição verificando se o componente recebeu de seu pai os dados.
+    if (receivedCalled.medicalRecord && receivedCalled.namePatient) {
+      this.readonly = true;
+      this.called = receivedCalled;
+    }
+  };
+
+  /** Propriedade que controla a obrigatóriedade dos campos de input */
+  @Input() required: boolean;
+
+  /** Propriedade para emitir as informações do chamado */
+  @Output() receivedCallInformationData = new EventEmitter<CalledModel>();
+  /** Propriedade para emitir as informações do chamado */
+  @Output() receivedImagesInformationData = new EventEmitter<UploadModel>();
+
+  public readonly: boolean;
   private called: CalledModel;
   private images: UploadModel;
+
+  private unsubscribe: any;
 
   constructor(
     private _calledService: CalledService
   ) { }
 
   ngOnInit() {
+    this.readonly = false;
+
     this.called = new CalledModel();
     this.images = new UploadModel();
   }
 
   /**
+   * Metodo Acionado apos a conclusão da exibição do componente, ativando a incrição do componente
+   * para a que o mesmo saiba quando será necessário limpar/resetar os campos do formulário.
+   */
+  ngAfterViewInit() {
+    this.unsubscribe = this._calledService.resetFormSubscriber.subscribe((context: boolean) => {
+      if (context) {
+        this.called = new CalledModel();
+      }
+    });
+  }
+
+  /**
    * Metodo responsavel por receber do componente filho os assuntos relacionados ao chamado
+   * E por fim, emitir o valor para a pagina que será responsavel por fazer a request para o backend
    * @param {Array<SubjectModel>} subject lista de assuntos relacionados ao chamado
    */
   public receiveSubject(subject: Array<SubjectModel>): void {
     this.called.observation.titles = subject;
+
+    this.receivedCallInformationData.emit(this.called);
   }
 
   /**
    * Metodo responsavel por receber do componente filho as imagens inseridas
-   * @param {Array<SubjectModel>} images lista de assuntos relacionados ao chamado
+   * E por fim, emitir o valor para a pagina que será responsavel por fazer a request para o backend
+   * @param {Array<FileModel>} images lista de assuntos relacionados ao chamado
    */
   public receiveImages(images: Array<FileModel>): void {
     this.images.images = images;
+
+    this.receivedImagesInformationData.emit(this.images);
   }
 
-  public testeSupremo(): void {
-    console.log(this.called);
-    console.log(this.images);
-
-    this._calledService.registerCalled(this.called)
-      .subscribe((result: any) => {
-        console.log(result, 'salve familia');
-      }, error => {
-        console.log(error, 'deu ruim familia');
-      });
+  /**
+   * Finaliza a incrição do componente, quando o mesmo é 'destruido'
+   */
+  ngOnDestroy() {
+    this.unsubscribe.unsubscribe();
   }
 
 }

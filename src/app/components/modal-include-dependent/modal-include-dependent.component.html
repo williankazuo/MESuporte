@@ -1,1 +1,102 @@
-<p>modal-include-dependent works!</p>
+<section class="container-dependent" *ngIf="open">
+  <span class="title-info">Vincular dependente</span>
+
+  <div class="container-dependent__group--subtitle d-flex align-center m-t-10">
+    <p class="sub-title-above-label-regular m-r-25">Pesquise aqui o paciente que deseja vincular, você pode pesquisar
+      por
+      prontuário, nome, CPF e/ou passaporte.</p>
+    <div class="container-dependent__group--subtitle__button">
+      <button class="btn btn--default" (click)="addDependent();">Adicionar
+        novo dependente</button>
+    </div>
+  </div>
+
+  <div class="container-dependent__group--form d-flex m-t-20">
+    <div class="form-group-field container-dependent__group--form__size--medical m-r-20">
+      <label class="text-label-input">Prontuário</label>
+      <input type="text" placeholder="ex. 0000000000" [(ngModel)]="filter.medicalRecord"
+        (keyup.enter)="searchPatient();">
+    </div>
+    <div class="form-group-field container-dependent__group--form__size--name m-r-20">
+      <label class="text-label-input">Nome</label>
+      <input type="text" placeholder="Digite aqui pelo nome..." [(ngModel)]="filter.name"
+        (keyup.enter)="searchPatient();">
+    </div>
+    <div class="form-group-field container-dependent__group--form__size--cpf m-r-20">
+      <label class="text-label-input">CPF</label>
+      <input type="text" placeholder="XXX.XXX.XXX-XX" [(ngModel)]="filter.document" (keyup.enter)="searchPatient();"
+        cpf>
+    </div>
+    <div class="form-group-field container-dependent__group--form__size--passport">
+      <label class="text-label-input">Passaporte</label>
+      <input type="text" placeholder="XXXXXXXXXXX" [(ngModel)]="filter.passport" (keyup.enter)="searchPatient();">
+    </div>
+  </div>
+
+  <div class="container-dependent__group--search d-flex justify-content-end m-t-20">
+    <div class="container-dependent__group--search__button">
+      <button class="btn btn--default" (click)="searchPatient();">Pesquisar</button>
+    </div>
+  </div>
+
+  <div class="container-dependent__group--table m-t-20">
+    <table>
+      <thead>
+        <tr>
+          <th>
+          </th>
+          <th>
+            Prontuário
+          </th>
+          <th>
+            Nome do Paciente
+          </th>
+          <th>
+            Nacionalidade
+          </th>
+          <th>
+            CPF
+          </th>
+          <th>
+            Passaporte
+          </th>
+          <th>
+            Nascimento
+          </th>
+          <th>
+            Sexo
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="f-s-13" (click)="selectDependent(item.idTabela);" *ngFor="let item of list.objeto">
+          <td>
+            <input class="form-group-field--label-check--input" type="radio" name="vaccine"
+              [(ngModel)]="idTableDependent" [value]="item.idTabela">
+            <div class="form-group-field--label-check--circle">
+              <span class="check"></span>
+            </div>
+          </td>
+          <td>{{item.numProntuario}}</td>
+          <td>{{item.nomePessoa}}</td>
+          <td>{{item.descNacionalidade}}</td>
+          <td>{{item.numCPF | cpf}}</td>
+          <td>{{item.numPassaporte}}</td>
+          <td>{{item.dataNascimento}}</td>
+          <td>{{item.descSexo}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="container-dependent__group--bind d-flex justify-content-end m-t-20">
+    <div class="container-dependent__group--bind__button">
+      <button class="btn btn--default" [disabled]="idTableDependent === 0"
+        (click)="attachDependent();">Vincular</button>
+    </div>
+  </div>
+</section>
+
+<section class=" container-outside" *ngIf="open" (click)="open = !open">
+
+</section>

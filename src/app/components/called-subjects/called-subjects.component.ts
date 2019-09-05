@@ -1,5 +1,5 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { SubjectModel } from 'src/app/@core/models/new-called/new-called.model';
+import { Component, OnInit, Output, EventEmitter, Input, AfterViewInit, OnDestroy } from '@angular/core';
+import { SubjectModel, CalledModel } from 'src/app/@core/models/new-called/new-called.model';
 import { CalledService } from 'src/app/@core/services/called/called.service';
 
 @Component({
@@ -7,13 +7,26 @@ import { CalledService } from 'src/app/@core/services/called/called.service';
   templateUrl: './called-subjects.component.html',
   styleUrls: ['./called-subjects.component.scss']
 })
-export class CalledSubjectsComponent implements OnInit {
+export class CalledSubjectsComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  /** propriedade para receber do componente pai as informações de um chamado - lista de assuntos */
+  @Input()
+  set receivedListSubject(receivedListSubject: Array<SubjectModel>) {
+    if (receivedListSubject.length > 0) {
+      this.readonly = true;
+      this.listSubject = receivedListSubject;
+    }
+  }
+
+  @Input() required: boolean;
 
   /** Propriedade de retorno para o componente pai, retorna a lista de assunto relacionados ao chamado */
   @Output() insertedSubject = new EventEmitter<Array<SubjectModel>>();
   /** Propriedade para receber do componente pai, se a lista de chamado esta valida ou não */
   @Input() validSubject: boolean = false;
 
+  /** propriedade para manter os campos apenas para leitura */
+  public readonly: boolean;
   /** Propriedade para receber o assunto selecionado do select */
   public subjectId: number;
   /** Propriedade para receber o assunto selecionado do select */
@@ -23,15 +36,32 @@ export class CalledSubjectsComponent implements OnInit {
   /** propriedade para receber a lista de assuntos do chamado do backend */
   public listAllCallSubject: Array<SubjectModel>;
 
+  private unsubscribe: any;
+
   constructor(
     private _calledService: CalledService
   ) { }
 
   ngOnInit() {
+    this.readonly = false;
     this.subjectId = 0;
     this.listSubject = new Array<SubjectModel>();
 
     this.getListCallSubject();
+  }
+
+  /**
+   * Metodo Acionado apos a conclusão da exibição do componente, ativando a incrição do componente
+   * para a que o mesmo saiba quando será necessário limpar/resetar os campos do formulário.
+   */
+  ngAfterViewInit() {
+    this.unsubscribe = this._calledService.resetFormSubscriber.subscribe((context: boolean) => {
+      if (context) {
+        this.subject = '';
+        this.subjectId = 0;
+        this.listSubject = new Array<SubjectModel>();
+      }
+    });
   }
 
   /**
@@ -112,6 +142,13 @@ export class CalledSubjectsComponent implements OnInit {
    */
   public removeSubject(index: number): void {
     this.listSubject.splice(index, 1);
+  }
+
+  /**
+   * Finaliza a incrição do componente, quando o mesmo é 'destruido'
+   */
+  ngOnDestroy() {
+    this.unsubscribe.unsubscribe();
   }
 
 }

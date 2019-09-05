@@ -5,7 +5,8 @@
 
   <div class="home-container__group--data">
     <div class="home-container__group--data__content--search m-b-20">
-      <app-search [select]="true" [placeholder]="placeholder" (receiveText)="receiveText($event);"></app-search>
+      <app-search [select]="true" [placeholder]="placeholder" (receiveText)="receiveText($event);"
+        [disableSearch]="readonly"></app-search>
     </div>
 
     <div class="home-container__group--data__content--personal p-b-20">
@@ -15,7 +16,7 @@
 
     <div class="home-container__group--data__content--form m-t-20">
       <app-form-registration-data #form (receiveMEData)="receiveMEData($event)"
-        (receiveSGHData)="receiveSGHData($event)">
+        (receiveSIAFData)="receiveSIAFData($event)" [disableForm]="readonly">
       </app-form-registration-data>
     </div>
   </div>

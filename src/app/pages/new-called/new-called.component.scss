@@ -1,7 +1,21 @@
+@import '../../../assets/scss/abstract/mixins';
+
 .container__called {
 
     &--new-called {
-        width: 545px;
-        display: inline-block;
+
+        &--container-fixed {
+            left: 0;
+            bottom: 0;
+            right: 0;
+            @include container ($p-t-b: 10px);
+            @include orientation($pos: fixed, $display: inline-block);
+            box-shadow: 0px 19px 38px $color-shadow;
+
+            &__button {
+                width: 260px;
+                display: inline-block;
+            }
+        }
     }
 }
