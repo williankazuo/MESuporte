@@ -9,7 +9,7 @@ RUN npm install
 
 ENV DEPLOY_ENV ${deploy_env}
 
-RUN ng build --env=$DEPLOY_ENV
+RUN ng build --configuration $DEPLOY_ENV
 
 FROM nginx:1.14-alpine
 
