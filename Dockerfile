@@ -1,4 +1,4 @@
-FROM node:8-alpine
+FROM node:10-alpine
 ARG deploy_env='dev'
 RUN npm install -g @angular/cli@8.2.0
 WORKDIR /web
