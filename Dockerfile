@@ -1,6 +1,6 @@
 FROM node:8-alpine
 ARG deploy_env='dev'
-RUN npm install -g @angular/cli@1.6.5
+RUN npm install -g @angular/cli@8.2.0
 WORKDIR /web
 
 COPY . .
