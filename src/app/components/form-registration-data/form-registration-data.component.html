@@ -10,27 +10,27 @@
         </div>
         <div class="form-group-field">
           <label class="text-label-input">Nome</label>
-          <input type="text" [(ngModel)]="siafUser.name" [disabled]="disabled">
+          <input type="text" [(ngModel)]="siafUser.name" [disabled]="readonly">
         </div>
         <div class="form-group-field" *ngIf="siafUser.documentType === 'CPF'">
           <label class="text-label-input">CPF</label>
           <input type="text" [ngModel]="siafUser.documentNumber | cpf" (ngModelChange)="siafUser.documentNumber=$event"
-            [disabled]="disabled" cpf>
+            [disabled]="readonly" cpf>
         </div>
         <div class="form-group-field" *ngIf="siafUser.documentType !== 'CPF'">
           <label class="text-label-input">Passaporte</label>
-          <input type="text" [(ngModel)]="siafUser.passport" [disabled]="disabled">
+          <input type="text" [(ngModel)]="siafUser.passport" [disabled]="readonly">
         </div>
 
         <div class="form-group-field d-flex">
           <div class="p-r-10 input-birth">
             <label class="text-label-input">Data de Nascimento</label>
-            <input type="text" [(ngModel)]="siafUser.birthDate" date [disabled]="disabled">
+            <input type="text" [(ngModel)]="siafUser.birthDate" date [disabled]="readonly">
           </div>
           <div class="p-l-10 input-beside-birth">
             <label class="text-label-input">Celular</label>
             <input type="text" [ngModel]="siafUser.phoneNumber | cellphone"
-              (ngModelChange)="siafUser.phoneNumber=$event" phone [disabled]="disabled">
+              (ngModelChange)="siafUser.phoneNumber=$event" phone [disabled]="readonly">
           </div>
         </div>
 
@@ -41,7 +41,7 @@
 
         <div class="form-group-field">
           <label class="text-label-input">Sexo</label>
-          <select [(ngModel)]="siafUser.gender" [disabled]="disabled">
+          <select [(ngModel)]="siafUser.gender" [disabled]="readonly">
             <option disabled hidden value="">Selecione</option>
             <option [value]="siafGender.Masculino">Masculino</option>
             <option [value]="siafGender.Feminino">Feminino</option>
@@ -65,25 +65,25 @@
         </div>
         <div class="form-group-field m-t-20">
           <label class="text-label-input">Nome</label>
-          <input type="text" [(ngModel)]="dependent.name" [disabled]="disabled">
+          <input type="text" [(ngModel)]="dependent.name" [disabled]="readonly">
         </div>
         <div class="form-group-field m-t-20" *ngIf="dependent.documentType === 'CPF'">
           <label class="text-label-input">CPF</label>
           <input type="text" [ngModel]="dependent.document | cpf" (ngModelChange)="dependent.document=$event"
-            [disabled]="disabled" cpf>
+            [disabled]="readonly" cpf>
         </div>
         <div class="form-group-field m-t-20" *ngIf="dependent.documentType !== 'CPF'">
           <label class="text-label-input">Passaporte</label>
-          <input type="text" [(ngModel)]="dependent.document" [disabled]="disabled">
+          <input type="text" [(ngModel)]="dependent.document" [disabled]="readonly">
         </div>
         <div class="form-group-field d-flex">
           <div class="p-r-10 input-birth">
             <label class="text-label-input">Data de Nascimento</label>
-            <input type="text" [(ngModel)]="dependent.birthDate" date [disabled]="disabled">
+            <input type="text" [(ngModel)]="dependent.birthDate" date [disabled]="readonly">
           </div>
           <div class="p-l-10 input-beside-birth">
             <label class="text-label-input">Sexo</label>
-            <select [(ngModel)]="dependent._sex" [disabled]="disabled">
+            <select [(ngModel)]="dependent._sex" [disabled]="readonly">
               <option disabled hidden value="">Selecione</option>
               <option [value]="meGender.Masculino">Masculino</option>
               <option [value]="meGender.Feminino">Feminino</option>
@@ -92,7 +92,7 @@
         </div>
       </div>
 
-      <div *ngIf="!disabled" class="container-form-data__group--button d-flex justify-content-center m-t-40">
+      <div *ngIf="!readonly" class="container-form-data__group--button d-flex justify-content-center m-t-40">
         <div class="container-form-data__group--button__container">
           <button class="btn btn--default" [disabled]="!activeButtonSIAF" (click)="updateDataPatientSIAF();">
             Atualizar dados SIAF
@@ -112,38 +112,38 @@
         </div>
         <div class="form-group-field">
           <label class="text-label-input">Nome</label>
-          <input type="text" [(ngModel)]="meUser.fullName" [disabled]="disabled">
+          <input type="text" [(ngModel)]="meUser.fullName" [disabled]="readonly">
         </div>
         <div class="form-group-field" *ngIf="meUser.documentType === 'CPF'">
           <label class=" text-label-input">CPF</label>
-          <input type="text" [ngModel]="meUser.documentNumber | cpf" [disabled]="disabled"
+          <input type="text" [ngModel]="meUser.documentNumber | cpf" [disabled]="readonly"
             (ngModelChange)="meUser.documentNumber=$event" cpf>
         </div>
         <div class="form-group-field" *ngIf="meUser.documentType !== 'CPF'">
           <label class="text-label-input">Passaporte</label>
-          <input type="text" [(ngModel)]="meUser.documentNumber" [disabled]="disabled">
+          <input type="text" [(ngModel)]="meUser.documentNumber" [disabled]="readonly">
         </div>
 
         <div class="form-group-field d-flex">
           <div class="p-r-10 input-birth">
             <label class="text-label-input">Data de Nascimento</label>
-            <input type="text" [(ngModel)]="meUser.birthDate" date [disabled]="disabled">
+            <input type="text" [(ngModel)]="meUser.birthDate" date [disabled]="readonly">
           </div>
           <div class="p-l-10 input-beside-birth">
             <label class="text-label-input">Celular</label>
             <input type="text" [ngModel]="meUser.phoneNumber | cellphone" (ngModelChange)="meUser.phoneNumber=$event"
-              phone [disabled]="disabled">
+              phone [disabled]="readonly">
           </div>
         </div>
 
         <div class="form-group-field">
           <label class="text-label-input">E-mail</label>
-          <input type="text" [(ngModel)]="meUser.mail" [disabled]="disabled">
+          <input type="text" [(ngModel)]="meUser.mail" [disabled]="readonly">
         </div>
 
         <div class="form-group-field">
           <label class="text-label-input">Sexo</label>
-          <select [(ngModel)]="meUser.gender" [disabled]="disabled">
+          <select [(ngModel)]="meUser.gender" [disabled]="readonly">
             <option disabled hidden value="">Selecione</option>
             <option [value]="meGender.Masculino">Masculino</option>
             <option [value]="meGender.Feminino">Feminino</option>
@@ -162,25 +162,25 @@
           </div>
           <div class="form-group-field m-t-20">
             <label class="text-label-input">Nome</label>
-            <input type="text" [(ngModel)]="dependent.name" [disabled]="disabled">
+            <input type="text" [(ngModel)]="dependent.name" [disabled]="readonly">
           </div>
           <div class="form-group-field m-t-20" *ngIf="dependent.documentType === 'CPF'">
             <label class="text-label-input">CPF</label>
             <input type="text" [ngModel]="dependent.document | cpf" (ngModelChange)="dependent.document=$event"
-              [disabled]="disabled" cpf>
+              [disabled]="readonly" cpf>
           </div>
           <div class="form-group-field m-t-20" *ngIf="dependent.documentType !== 'CPF'">
             <label class="text-label-input">Passaporte</label>
-            <input type="text" [(ngModel)]="dependent.document" [disabled]="disabled">
+            <input type="text" [(ngModel)]="dependent.document" [disabled]="readonly">
           </div>
           <div class="form-group-field d-flex">
             <div class="p-r-10 input-birth">
               <label class="text-label-input">Data de Nascimento</label>
-              <input type="text" [(ngModel)]="dependent.birthDate" date [disabled]="disabled">
+              <input type="text" [(ngModel)]="dependent.birthDate" date [disabled]="readonly">
             </div>
             <div class="p-l-10 input-beside-birth">
               <label class="text-label-input">Sexo</label>
-              <select [(ngModel)]="dependent._sex" [disabled]="disabled">
+              <select [(ngModel)]="dependent._sex" [disabled]="readonly">
                 <option disabled hidden value="">Selecione</option>
                 <option [value]="meGender.Masculino">Masculino</option>
                 <option [value]="meGender.Feminino">Feminino</option>
@@ -189,7 +189,7 @@
           </div>
         </div>
 
-        <div *ngIf="!disabled"
+        <div *ngIf="!readonly"
           class="form-group-field--button container-form-data__group--button d-flex justify-content-center">
           <div class="container-form-data__group--button__container">
             <button class="btn btn--default" (click)="updateDataPatientME()" [disabled]="!activeButtonMeUser">
@@ -202,9 +202,9 @@
 
   </div>
 
-  <div *ngIf="!disabled" class="container-form-data__group--button d-flex justify-content-center m-t-40">
+  <div *ngIf="!readonly" class="container-form-data__group--button d-flex justify-content-center m-t-40">
     <div class="container-form-data__group--button__container">
-      <!-- <button class="btn btn--white" [disabled]="disabled || (!meUser.medicalRecord && !siafUser.medicalRecord)"
+      <!-- <button class="btn btn--white" [disabled]="readonly || (!meUser.medicalRecord && !siafUser.medicalRecord)"
         (click)="attachDependent();">Vincular dependente</button> -->
       <button class="btn btn--white" (click)="attachDependent();">Vincular dependente</button>
     </div>

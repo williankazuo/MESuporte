@@ -19,19 +19,21 @@ import { DateUtilService } from 'src/app/@core/services/utils/date.service';
 })
 export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  // tslint:disable-next-line: no-input-rename
+  @Input('disableForm')
+  set disabled(disabled: boolean) {
+    this.readonly = disabled;
+  }
   /** Propriedade para receber do componente pai as informações de um chamado */
   @Input()
   set receivedCalled(receivedCalled: CalledModel) {
     if (receivedCalled.medicalRecord && receivedCalled.namePatient) {
-      this.disabled = true;
       this.getPatientDataByMedicalRecordSIAF(receivedCalled.medicalRecord);
     }
   }
 
   @Output() receiveMEData = new EventEmitter();
   @Output() receiveSIAFData = new EventEmitter();
-  // tslint:disable-next-line: no-input-rename
-  @Input('disableForm') disabled = false;
 
   public siafUser = new UserRegistrationModel();
   public meUser = new UserRegistrationModel();
@@ -43,6 +45,8 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
   public meGender = GenderME;
 
   private unsubscribe: any;
+
+  public readonly: boolean;
 
   constructor(
     private _patientDataService: PatientDataService,

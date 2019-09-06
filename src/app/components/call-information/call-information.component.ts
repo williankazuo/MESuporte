@@ -11,15 +11,19 @@ import { CalledService } from 'src/app/@core/services/called/called.service';
 })
 export class CallInformationComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  /** propriedade para manter os campos apenas para leitura */
+  @Input()
+  set readonly(readonly: boolean) {
+    this._readonly = readonly;
+  }
   /** Propriedade para receber do componente pai as informações de um chamado */
   @Input()
   set receivedCalled(receivedCalled: CalledModel) {
     // condição verificando se o componente recebeu de seu pai os dados.
     if (receivedCalled.medicalRecord && receivedCalled.namePatient) {
-      this.readonly = true;
       this.called = receivedCalled;
     }
-  };
+  }
 
   /** Propriedade que controla a obrigatóriedade dos campos de input */
   @Input() required: boolean;
@@ -29,9 +33,10 @@ export class CallInformationComponent implements OnInit, AfterViewInit, OnDestro
   /** Propriedade para emitir as informações do chamado */
   @Output() receivedImagesInformationData = new EventEmitter<UploadModel>();
 
-  public readonly: boolean;
   private called: CalledModel;
   private images: UploadModel;
+
+  public _readonly: boolean;
 
   private unsubscribe: any;
 
@@ -40,8 +45,6 @@ export class CallInformationComponent implements OnInit, AfterViewInit, OnDestro
   ) { }
 
   ngOnInit() {
-    this.readonly = false;
-
     this.called = new CalledModel();
     this.images = new UploadModel();
   }

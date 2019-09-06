@@ -4,7 +4,7 @@
     </label>
 
     <div class="container-called-subject__content--fields m-b-15">
-        <select name="" id="field-called-subject" (change)="selectSubject(subjectId)" [(ngModel)]="subjectId" [disabled]="readonly">
+        <select name="" id="field-called-subject" (change)="selectSubject(subjectId)" [(ngModel)]="subjectId" [disabled]="_readonly">
             <option disabled hidden [value]="0">Selecione</option>
             <option *ngFor="let item of listAllCallSubject" value="{{item.id}}">{{item.descTitle}}</option>
         </select>
@@ -22,7 +22,7 @@
         <div *ngFor="let subject of listSubject; let i = index"
             class="container-called-subject__content--subjects__item d-inline-flex justify-content-center align-center m-b-10 m-r-10">
             <p class="container-called-subject__content--subjects__item--text">{{subject.descTitle}}</p>
-            <div class="container-called-subject__content--subjects__item--remove cursor" (click)="removeSubject(i)" *ngIf="!readonly">
+            <div class="container-called-subject__content--subjects__item--remove cursor" (click)="removeSubject(i)" *ngIf="!_readonly">
                 <img src="../../../assets/images/subject/X.png" alt="">
             </div>
         </div>

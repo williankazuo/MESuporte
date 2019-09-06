@@ -3,7 +3,7 @@
     <div class="container__called--new-called grid-lg-5">
         <app-call-information (receivedCallInformationData)="receivedCallInformationData($event)"
             (receivedImagesInformationData)="receivedImagesInformationData($event)" [receivedCalled]="called"
-            [required]="requiredInformation">
+            [required]="requiredInformation" [readonly]="readonly">
         </app-call-information>
     </div>
 
@@ -25,7 +25,7 @@
 
             <div class="container__called--new-called__group--data__content--form m-t-20">
                 <app-form-registration-data #form (receiveMEData)="receiveMEData($event)"
-                    (receiveSIAFData)="receiveSIAFData($event)" [receivedCalled]="called">
+                    (receiveSIAFData)="receiveSIAFData($event)" [receivedCalled]="called" [disableForm]="readonly">
                 </app-form-registration-data>
             </div>
         </div>

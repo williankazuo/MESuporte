@@ -9,11 +9,15 @@ import { CalledService } from 'src/app/@core/services/called/called.service';
 })
 export class CalledSubjectsComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  /** propriedade para manter os campos apenas para leitura */
+  @Input()
+  set readonly(readonly: boolean) {
+    this._readonly = readonly;
+  }
   /** propriedade para receber do componente pai as informações de um chamado - lista de assuntos */
   @Input()
   set receivedListSubject(receivedListSubject: Array<SubjectModel>) {
     if (receivedListSubject.length > 0) {
-      this.readonly = true;
       this.listSubject = receivedListSubject;
     }
   }
@@ -25,8 +29,6 @@ export class CalledSubjectsComponent implements OnInit, AfterViewInit, OnDestroy
   /** Propriedade para receber do componente pai, se a lista de chamado esta valida ou não */
   @Input() validSubject: boolean = false;
 
-  /** propriedade para manter os campos apenas para leitura */
-  public readonly: boolean;
   /** Propriedade para receber o assunto selecionado do select */
   public subjectId: number;
   /** Propriedade para receber o assunto selecionado do select */
@@ -38,12 +40,13 @@ export class CalledSubjectsComponent implements OnInit, AfterViewInit, OnDestroy
 
   private unsubscribe: any;
 
+  public _readonly: boolean
+
   constructor(
     private _calledService: CalledService
   ) { }
 
   ngOnInit() {
-    this.readonly = false;
     this.subjectId = 0;
     this.listSubject = new Array<SubjectModel>();
 
