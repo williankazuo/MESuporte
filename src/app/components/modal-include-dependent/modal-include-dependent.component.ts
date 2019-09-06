@@ -3,11 +3,11 @@ import { ModalDependentService } from 'src/app/@core/services/modal-dependent/mo
 import { ModalAddDependentService } from 'src/app/@core/services/modal-add-dependent/modal-add-dependent-service';
 import { DependentService } from 'src/app/@core/services/dependents/dependent.service';
 import { FilterDependent } from 'src/app/@core/models/dependent/filter-dependent.model';
-import { CPFMaskService } from 'src/app/@core/services/utils/cpfmask.service';
 import { ListDependentArray } from 'src/app/@core/models/dependent/list-dependent.model';
 import { AttachDependentModel } from 'src/app/@core/models/dependent/attach-dependent.model';
 import { ModalAlertService } from 'src/app/@core/services/modal-alert/modal-alert.service';
 import { ModalAlert } from 'src/app/@core/models/modal-alert/modal-alert.model';
+import { DateUtilService } from 'src/app/@core/services/utils/date.service';
 
 @Component({
   selector: 'app-modal-include-dependent',
@@ -20,14 +20,14 @@ export class ModalIncludeDependentComponent implements OnInit {
   public idTableHolder = '';
   public filter = new FilterDependent();
   public list = new ListDependentArray();
+  public tableHeader = ['', 'Prontuário', 'Nome do Paciente', 'Nacionalidade', 'CPF', 'Passaporte', 'Nascimento', 'Sexo'];
 
   constructor(
     private _modalDependentService: ModalDependentService,
     private _addDependentService: ModalAddDependentService,
     private _dependentService: DependentService,
-    private _cpfMaskService: CPFMaskService,
-    private _modalAlertService: ModalAlertService
-
+    private _modalAlertService: ModalAlertService,
+    private _dateUtilService: DateUtilService
   ) { }
 
   ngOnInit() {
@@ -58,15 +58,11 @@ export class ModalIncludeDependentComponent implements OnInit {
    * Método responsável por buscar os pacientes que vão ser vinculados ao titular. De acordo com os filtros digitados.
    */
   public searchPatient(): void {
-    this.filter.document = this._cpfMaskService.removeCPFMask(this.filter.document);
     this._dependentService.filterDependent(this.filter).subscribe(response => {
       this.list = response;
       // Formatar as datas
       this.list.objeto.map(data => {
-        if (data.dataNascimento.indexOf('T') === -1) {
-          data.dataNascimento = data.dataNascimento.concat('T00:00:00');
-          data.dataNascimento = new Date(data.dataNascimento).toLocaleDateString();
-        }
+        data.dataNascimento = this._dateUtilService.convertShowDate(data.dataNascimento);
         return data;
       });
     }, error => {

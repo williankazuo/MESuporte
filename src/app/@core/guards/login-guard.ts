@@ -57,7 +57,7 @@ export class LoginGuard implements CanActivate {
      */
     private validateLogin(routes: Array<string>): void {
         if (routes[0] === Routes.login) {
-            this._router.navigate([Routes.home]);
+            this._router.navigate([Routes.new_called]);
         }
     }
 

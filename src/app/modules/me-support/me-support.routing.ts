@@ -12,16 +12,16 @@ const routes: Routes = [
         path: '',
         component: MeSupportComponent,
         children: [
-            {
-                path: 'inicio',
-                component: HomeCalledComponent,
-                canActivate: [AuthGuard]
-            },
-            {
-                path: 'inicio/:id',
-                component: HomeCalledComponent,
-                canActivate: [AuthGuard]
-            },
+            // {
+            //     path: 'inicio',
+            //     component: HomeCalledComponent,
+            //     canActivate: [AuthGuard]
+            // },
+            // {
+            //     path: 'inicio/:id',
+            //     component: HomeCalledComponent,
+            //     canActivate: [AuthGuard]
+            // },
             {
                 path: 'novo-chamado',
                 component: NewCalledComponent,

@@ -6,19 +6,24 @@ import { API } from '../../consts/environment/api.const';
 import { ListDependentArray } from '../../models/dependent/list-dependent.model';
 import { AttachDependentModel } from '../../models/dependent/attach-dependent.model';
 import { NewDependentModel } from '../../models/dependent/new-dependent.model';
+import { CPFMaskService } from '../utils/cpfmask.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class DependentService {
 
-    constructor(private http: HttpClient) { }
+    constructor(
+        private http: HttpClient,
+        private _cpfMaskService: CPFMaskService
+    ) { }
 
     /**
      * Método responsável por filtrar os dependentes na listagem.
      * @param filter opões de filtros.
      */
     public filterDependent(filter: FilterDependent): Observable<ListDependentArray> {
+        filter.document = this._cpfMaskService.removeCPFMask(filter.document);
         return this.http.get<ListDependentArray>(API.callSystem + `/api/ExternalServices/siaf` +
             `/filter?name=${filter.name}&medicalRecord=${filter.medicalRecord}&passport=${filter.passport}&document=${filter.document}`);
     }

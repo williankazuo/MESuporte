@@ -20,6 +20,7 @@ import { ModalAddDependentService } from './@core/services/modal-add-dependent/m
 import { ValidateCPFService } from './@core/services/utils/validatecpf.service';
 import { DependentService } from './@core/services/dependents/dependent.service';
 import { CPFMaskService } from './@core/services/utils/cpfmask.service';
+import { DateUtilService } from './@core/services/utils/date.service';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { CPFMaskService } from './@core/services/utils/cpfmask.service';
     ValidateCPFService,
     DependentService,
     CPFMaskService,
+    DateUtilService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
