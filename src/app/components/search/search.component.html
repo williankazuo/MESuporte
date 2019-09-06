@@ -1,12 +1,10 @@
 <div class="container-search m-t-30 d-flex align-flex-initial">
   <div class="container-search__group--select m-r-20" *ngIf="select">
-    <select [(ngModel)]="selectedValue" (change)="changeSelectedValue();">
-      <option value="" disabled hidden>Selecione</option>
+    <select [(ngModel)]="selectedValue">
       <option [value]="searchType.cpf">{{searchType.cpf}}</option>
       <option [value]="searchType.prontuario">{{searchType.prontuario}}</option>
       <option [value]="searchType.passaporte">{{searchType.passaporte}}</option>
     </select>
-    <p class="text-title-error" *ngIf="errorSelect">Selecione o tipo</p>
   </div>
   <div class="container-search__group--input m-r-20">
     <input *ngIf="selectedValue !== searchType.cpf" type="text" [placeholder]="placeholder" (keyup.enter)="search();"

@@ -76,7 +76,7 @@ export class ModalAddDependentComponent implements OnInit {
    */
   public configureSuccess(): void {
     const alertConfig = new ModalAlert();
-    alertConfig.title = 'Sua solicitação de cadastro de dependente foi realizado com sucesso!';
+    alertConfig.title = 'Cadastro de dependente foi realizado com sucesso!';
     alertConfig.button1Text = 'OK';
     alertConfig.image = '../../../assets/images/modal-alert/icon_ok.png';
     alertConfig.button1Action = () => {

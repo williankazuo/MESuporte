@@ -34,7 +34,7 @@ export class CalledService {
      * @param {CalledModel} called chamado que esta sendo registrado.
      */
     public registerCalled(called: CalledModel): Observable<any> {
-        return this.http.post<CalledModel>(API.callSystem + '/api/Called', called);
+        return this.http.post<any>(API.callSystem + '/api/Called', called);
     }
 
     /**
@@ -72,5 +72,13 @@ export class CalledService {
      */
     public getCallById(id: number): Observable<CalledModel> {
         return this.http.get<CalledModel>(API.callSystem + `/api/Called/${id}`);
+    }
+
+    /**
+     * Método responsável por atualizar os dados do chamado.
+     * @param called chamado a ser atualizado.
+     */
+    public updateCall(called: CalledModel): Observable<any> {
+        return this.http.put<any>(API.callSystem + '/api/Called', called);
     }
 }

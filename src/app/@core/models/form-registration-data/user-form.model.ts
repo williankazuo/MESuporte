@@ -13,6 +13,7 @@ export class DependentUserMeuEinsteinModel {
     sex: number;
     profileId: string;
     _sex: string;
+    idTable: string;
 
     constructor() {
         this.dependentId = '';
@@ -29,6 +30,7 @@ export class DependentUserMeuEinsteinModel {
         this.sex = 0;
         this.profileId = '';
         this._sex = '';
+        this.idTable = '';
     }
 }
 

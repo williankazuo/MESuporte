@@ -16,7 +16,7 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output() receiveText = new EventEmitter();
 
   public searchText = '';
-  public selectedValue = '';
+  public selectedValue = SearchType.cpf;
   public searchType = SearchType;
   public errorSelect = false;
 
@@ -38,7 +38,6 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
     this.unsubscribe = this._calledService.resetFormSubscriber.subscribe((context: boolean) => {
       if (context) {
         this.searchText = '';
-        this.selectedValue = '';
       }
     });
   }
@@ -48,18 +47,15 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
    * Emite o campo de texto, e em caso de select box, emite o campo de texto e o valor do select.
    */
   public search(): void {
+    let text = JSON.parse(JSON.stringify(this.searchText));
     if (this.select === true) {
-      if (this.selectedValue !== '') {
-        this.errorSelect = false;
-        if (this.selectedValue === SearchType.cpf) {
-          this.searchText = this._cpfMaskService.removeCPFMask(this.searchText);
-        }
-        this.receiveText.emit([this.selectedValue, this.searchText]);
-      } else {
-        this.errorSelect = true;
+      this.errorSelect = false;
+      if (this.selectedValue === SearchType.cpf) {
+        text = this._cpfMaskService.removeCPFMask(text);
       }
+      this.receiveText.emit([this.selectedValue, text]);
     } else {
-      this.receiveText.emit(this.searchText);
+      this.receiveText.emit(text);
     }
   }
 

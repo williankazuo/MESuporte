@@ -11,6 +11,11 @@ import { GenderME } from 'src/app/@core/consts/gender/gender-me.const';
 import { CalledService } from 'src/app/@core/services/called/called.service';
 import { CalledModel } from 'src/app/@core/models/new-called/new-called.model';
 import { DateUtilService } from 'src/app/@core/services/utils/date.service';
+import { CallActionService } from 'src/app/@core/services/called/call-action.service';
+import { CallStatus } from 'src/app/@core/enums/ended-calls/call-status.enum';
+import { CallType } from 'src/app/@core/consts/ended-calls/callType.const';
+import { AuthenticationService } from 'src/app/@core/services/authentication/login.service';
+import { UserModel } from 'src/app/@core/models/login/user.model';
 
 @Component({
   selector: 'app-form-registration-data',
@@ -43,13 +48,16 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
   public meGender = GenderME;
 
   private unsubscribe: any;
+  private currentUser: UserModel;
 
   constructor(
     private _patientDataService: PatientDataService,
     private _modalAlertService: ModalAlertService,
     private _modalDependentService: ModalDependentService,
     private _calledService: CalledService,
-    private _dateUtilService: DateUtilService
+    private _dateUtilService: DateUtilService,
+    private _callActionService: CallActionService,
+    private _authenticationService: AuthenticationService
   ) {
 
   }
@@ -64,6 +72,7 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
         this.getPatientDataByMedicalRecordSIAF(data[1]);
       }
     });
+    this.currentUser = this._authenticationService.getCurrentUser();
   }
 
   /**
@@ -320,6 +329,20 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
   private clearForm() {
     this.meUser = new UserRegistrationModel();
     this.siafUser = new UserRegistrationModel();
+  }
+
+
+  private checkCall(): void {
+    const idCall = this._callActionService.getIdCall();
+    if (!idCall) {
+      const call = new CalledModel();
+      call.nameClerk = this.currentUser.name;
+      call.namePatient = this.siafUser.name;
+      call.medicalRecord = this.siafUser.medicalRecord;
+      call.idStatus = CallStatus.Open;
+      call.type = CallType.Telefone;
+      this._calledService.registerCalled()
+    }
   }
 
   /**
