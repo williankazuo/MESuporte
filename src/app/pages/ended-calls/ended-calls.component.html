@@ -43,37 +43,27 @@
     <table>
       <thead>
         <tr>
-          <th width="70px">
-            Tipo
-          </th>
-          <th>
-            Nome do paciente
-          </th>
-          <th>
-            Assuntos
-          </th>
-          <th>
-            Nome do atendente
-          </th>
-          <th width="128px">
-            Data
-          </th>
-          <th width="100px">
-            Hora
-          </th>
+          <th *ngFor="let item of tableHeader">{{item}}</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of list" (click)="openCall(item.id, item.type);">
-          <td><img
-              [src]="item.type === callType.Telefone ? '../../../assets/images/ended-calls/icon_call.png' : '../../../assets/images/ended-calls/icon_chat.png'">
+        <ng-container *ngIf="list.length > 0">
+          <tr *ngFor=" let item of list" (click)="openCall(item.id, item.type);">
+            <td><img
+                [src]="item.type === callType.Telefone ? '../../../assets/images/ended-calls/icon_call.png' : '../../../assets/images/ended-calls/icon_chat.png'">
+            </td>
+            <td>{{item.namePatient}}</td>
+            <td>{{item.titles?.join(';')}}</td>
+            <td>{{item.nameClerk}}</td>
+            <td>{{item.date}}</td>
+            <td>{{item.hour}}</td>
+          </tr>
+        </ng-container>
+        <ng-container *ngIf="list.length <= 0">
+          <td [attr.colspan]="tableHeader.length" class="text-align-center">
+            Nenhum chamado encontrado.
           </td>
-          <td>{{item.namePatient}}</td>
-          <td>{{item.titles?.join(';')}}</td>
-          <td>{{item.nameClerk}}</td>
-          <td>{{item.date}}</td>
-          <td>{{item.hour}}</td>
-        </tr>
+        </ng-container>
       </tbody>
     </table>
   </div>

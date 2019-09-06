@@ -3,7 +3,7 @@ import { FileModel } from 'src/app/@core/models/upload/upload.model';
 import { ModalAddDependentService } from 'src/app/@core/services/modal-add-dependent/modal-add-dependent-service';
 import { ModalDependentService } from 'src/app/@core/services/modal-dependent/modal-dependent.service';
 import { NewDependentModel } from 'src/app/@core/models/dependent/new-dependent.model';
-import { GenderEnum } from 'src/app/@core/enums/gender/gender.enum';
+import { GenderEnumSIAF } from 'src/app/@core/enums/gender/gender.enum';
 import { DependentService } from 'src/app/@core/services/dependents/dependent.service';
 import { ModalAlert } from 'src/app/@core/models/modal-alert/modal-alert.model';
 import { ModalAlertService } from 'src/app/@core/services/modal-alert/modal-alert.service';
@@ -20,7 +20,7 @@ export class ModalAddDependentComponent implements OnInit {
   public idTableDependent = '';
   public newDependent = new NewDependentModel();
   public birthDate = '';
-  public genderEnum = GenderEnum;
+  public genderEnum = GenderEnumSIAF;
 
   constructor(
     private _modalAddDependentService: ModalAddDependentService,

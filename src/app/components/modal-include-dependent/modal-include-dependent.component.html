@@ -43,48 +43,35 @@
     <table>
       <thead>
         <tr>
-          <th>
-          </th>
-          <th>
-            Prontuário
-          </th>
-          <th>
-            Nome do Paciente
-          </th>
-          <th>
-            Nacionalidade
-          </th>
-          <th>
-            CPF
-          </th>
-          <th>
-            Passaporte
-          </th>
-          <th>
-            Nascimento
-          </th>
-          <th>
-            Sexo
-          </th>
+          <th *ngFor="let item of tableHeader">{{item}}</th>
         </tr>
       </thead>
       <tbody>
-        <tr class="f-s-13" (click)="selectDependent(item.idTabela);" *ngFor="let item of list.objeto">
-          <td>
-            <input class="form-group-field--label-check--input" type="radio" name="vaccine"
-              [(ngModel)]="idTableDependent" [value]="item.idTabela">
-            <div class="form-group-field--label-check--circle">
-              <span class="check"></span>
-            </div>
-          </td>
-          <td>{{item.numProntuario}}</td>
-          <td>{{item.nomePessoa}}</td>
-          <td>{{item.descNacionalidade}}</td>
-          <td>{{item.numCPF | cpf}}</td>
-          <td>{{item.numPassaporte}}</td>
-          <td>{{item.dataNascimento}}</td>
-          <td>{{item.descSexo}}</td>
-        </tr>
+        <ng-container *ngIf="list.objeto.length > 0">
+          <tr class="f-s-13" (click)="selectDependent(item.idTabela);" *ngFor="let item of list.objeto">
+            <td>
+              <input class="form-group-field--label-check--input" type="radio" name="vaccine"
+                [(ngModel)]="idTableDependent" [value]="item.idTabela">
+              <div class="form-group-field--label-check--circle">
+                <span class="check"></span>
+              </div>
+            </td>
+            <td>{{item.numProntuario}}</td>
+            <td>{{item.nomePessoa}}</td>
+            <td>{{item.descNacionalidade}}</td>
+            <td>{{item.numCPF | cpf}}</td>
+            <td>{{item.numPassaporte}}</td>
+            <td>{{item.dataNascimento}}</td>
+            <td>{{item.descSexo}}</td>
+          </tr>
+        </ng-container>
+        <ng-container>
+          <tr *ngIf="list.objeto.length === 0" class="text-align-center">
+            <td [attr.colspan]="tableHeader.length">
+              Não encontrado nenhum paciente.
+            </td>
+          </tr>
+        </ng-container>
       </tbody>
     </table>
   </div>

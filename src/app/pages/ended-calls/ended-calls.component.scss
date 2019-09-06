@@ -3,7 +3,7 @@
 
 .container-ended {
   margin: 40px 30px;
-  
+
   &__group {
     &--title {
       &__results {
@@ -42,4 +42,8 @@
       }
     }
   }
+}
+
+th:nth-child(1) {
+  width: 70px;
 }

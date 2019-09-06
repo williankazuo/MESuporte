@@ -10,6 +10,7 @@ import { GenderSiaf } from 'src/app/@core/consts/gender/gender-siaf.const';
 import { GenderME } from 'src/app/@core/consts/gender/gender-me.const';
 import { CalledService } from 'src/app/@core/services/called/called.service';
 import { CalledModel } from 'src/app/@core/models/new-called/new-called.model';
+import { DateUtilService } from 'src/app/@core/services/utils/date.service';
 
 @Component({
   selector: 'app-form-registration-data',
@@ -47,7 +48,8 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
     private _patientDataService: PatientDataService,
     private _modalAlertService: ModalAlertService,
     private _modalDependentService: ModalDependentService,
-    private _calledService: CalledService
+    private _calledService: CalledService,
+    private _dateUtilService: DateUtilService
   ) {
 
   }
@@ -171,22 +173,14 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
    * @param userData Dados do usuário
    */
   private formatData(userData: UserRegistrationModel): UserRegistrationModel {
-    // Quando a data do backend vem sem o TIME, é convertido para um dia a menos. Então concatena um T00:00:00
-    if (userData.birthDate && userData.birthDate.indexOf('T') === -1) {
-      userData.birthDate = userData.birthDate.concat('T00:00:00');
-    }
-    userData.birthDate = new Date(userData.birthDate).toLocaleDateString();
+    userData.birthDate = this._dateUtilService.convertShowDate(userData.birthDate);
     if (userData.medicalRecord && userData.medicalRecord === '0') {
       userData.medicalRecord = '';
     }
     if (userData.dependents && userData.dependents.length > 0) {
       userData.dependents.map(data => {
         data.sex = GenderEnum[data._sex];
-        // Quando a data do backend vem sem o TIME, é convertido para um dia a menos. Então concatena um T00:00:00
-        if (data.birthDate && data.birthDate.indexOf('T') === -1) {
-          data.birthDate = data.birthDate.concat('T00:00:00');
-        }
-        data.birthDate = new Date(data.birthDate).toLocaleDateString();
+        data.birthDate = this._dateUtilService.convertShowDate(data.birthDate);
       });
     }
     return userData;
@@ -228,8 +222,8 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
    * Metodo responsavel por atualizar os dados do paciente no SGH e MEU EINSTEIN
    */
   private updateDataPatientME(): void {
-    // this.emitUserData();
-    const meUser = this.revertData(JSON.parse(JSON.stringify(this.meUser)));
+    let meUser = JSON.parse(JSON.stringify(this.meUser));
+    meUser = this.revertData(meUser);
     this._patientDataService.updateDataME(meUser)
       .subscribe(response => {
         this.configureSuccess();
@@ -244,7 +238,8 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
    * Método responsável por atualizar os dados do paciente no SIAF.
    */
   public updateDataPatientSIAF() {
-    const siafUser = JSON.parse(JSON.stringify(this.revertData(this.siafUser)));
+    let siafUser = JSON.parse(JSON.stringify(this.siafUser));
+    siafUser = this.revertData(siafUser);
     siafUser.gender = GenderEnumSIAF[siafUser.gender];
     this._patientDataService.updateDataSIAF(siafUser)
       .subscribe(response => {
