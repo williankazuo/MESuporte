@@ -5,7 +5,7 @@
 
     <div class="container-called__content">
         <div class="container-called__content__data-group">
-            <app-called-subjects (insertedSubject)="receiveSubject($event)" [required]="required"
+            <app-called-subjects (insertedSubject)="receiveSubject($event)" [required]="required" [readonly]="_readonly"
                 [receivedListSubject]="called.observation.titles">
             </app-called-subjects>
         </div>
@@ -13,7 +13,7 @@
         <div class="container-called__content__data-group">
             <label for="obs"
                 class="container-called__content__data-group__fields--label text-label-input">Observação</label>
-            <textarea class="" id="obs" [(ngModel)]="called.observation.text" [disabled]="readonly"></textarea>
+            <textarea class="" id="obs" [(ngModel)]="called.observation.text" [disabled]="_readonly"></textarea>
             <p *ngIf="required && called.observation.text.length === 0" class="text-title-error">Campo obrigatório</p>
         </div>
 
