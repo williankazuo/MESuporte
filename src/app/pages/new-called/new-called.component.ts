@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormRegistrationDataComponent } from 'src/app/components/form-registration-data/form-registration-data.component';
 import { UserRegistrationModel } from 'src/app/@core/models/form-registration-data/user-form.model';
 import { PatientDataService } from 'src/app/@core/services/patient-data/patient-data.service';
@@ -18,7 +18,7 @@ import { ActivatedRoute, Params } from '@angular/router';
   templateUrl: './new-called.component.html',
   styleUrls: ['./new-called.component.scss']
 })
-export class NewCalledComponent implements OnInit, AfterViewInit {
+export class NewCalledComponent implements OnInit {
 
   @ViewChild('form', { static: false }) form: FormRegistrationDataComponent;
 
@@ -61,12 +61,6 @@ export class NewCalledComponent implements OnInit, AfterViewInit {
     this.requiredData = false;
   }
 
-  /**
-   * Metodo acionado apos a inicialização do template do componente
-   */
-  ngAfterViewInit() {
-    this.formatWindow();
-  }
 
   private getCalledById(id: number): void {
     this._calledService.getCallById(id).subscribe((result: CalledModel) => {
@@ -75,29 +69,6 @@ export class NewCalledComponent implements OnInit, AfterViewInit {
     });
   }
 
-  /**
-   * Método responsavel por formatar a janela do navegador.
-   * Mantem o botão finalizar com um espaçamento entre os demais itens
-   * CALCULA O TAMANHO DO CONTAINER + O TAMANHO QUE O BOTÃO OCUPA NA JANELA.
-   *    OBS: O botão fixo com bottom: 0, fica flutuando sobre os demais itens que estão no final da janela.
-   *    O calculo é para "Criar espaçamento" do container e o botão fixo.
-   */
-  private formatWindow(): void {
-    if (!this.readonly) {
-      // pega o container que recebera a nova altura
-      const container = document.getElementsByClassName('container__called')[0] as HTMLElement;
-
-      // recebe a altura do header para desconsiderar no calculo
-      const heightHeader = (window.getComputedStyle(document.getElementsByClassName('header__container')[0]).height).split('px')[0];
-      // pega a altura do container para futuramente somar com a altura do botão fixo desta tela
-      // OBS: Valor recebido com px. Ex: 20px. Neste get, ja ocorre a formatação para retirar o mesmo. Novo valor se mantem em string
-      const heightContainer = ((window.getComputedStyle(document.getElementsByClassName('app')[0]).height).split('px')[0]);
-      // Em seguida pega o valor de altura do botão que será fixo na tela
-      const heightContainerButton = ((window.getComputedStyle(document.getElementsByClassName('button__fixed')[0]).height).split('px')[0]);
-      // tslint:disable-next-line: radix
-      container.style.height = (parseInt(heightContainer) + parseInt(heightContainerButton) - parseInt(heightHeader)).toString() + 'px';
-    }
-  }
 
   // #region Receber valores dos @OUTPUTS
 
