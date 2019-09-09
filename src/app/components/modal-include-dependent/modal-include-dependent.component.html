@@ -39,7 +39,7 @@
     </div>
   </div>
 
-  <div class="container-dependent__group--table m-t-20">
+  <div *ngIf="search" class="container-dependent__group--table m-t-20">
     <table>
       <thead>
         <tr>
@@ -66,7 +66,7 @@
           </tr>
         </ng-container>
         <ng-container>
-          <tr *ngIf="list.objeto.length === 0" class="text-align-center">
+          <tr *ngIf="list.objeto.length === 0 && search" class="text-align-center">
             <td [attr.colspan]="tableHeader.length">
               Não encontrado nenhum paciente.
             </td>
@@ -76,7 +76,7 @@
     </table>
   </div>
 
-  <div class="container-dependent__group--bind d-flex justify-content-end m-t-20">
+  <div *ngIf="list.objeto.length > 0" class="container-dependent__group--bind d-flex justify-content-end m-t-20">
     <div class="container-dependent__group--bind__button">
       <button class="btn btn--default" [disabled]="idTableDependent === 0"
         (click)="attachDependent();">Vincular</button>
