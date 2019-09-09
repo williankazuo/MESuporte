@@ -45,7 +45,7 @@ export class CallActionService {
             call.type = CallType.Telefone;
             call.observation = observation;
             this._calledService.registerCalled(call).subscribe(response => {
-                this.setIdCall(response['idCalled']);
+                this.setIdCall(response.idCalled);
             }, error => {
 
             });

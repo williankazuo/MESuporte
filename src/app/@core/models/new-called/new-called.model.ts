@@ -25,6 +25,7 @@ export class CalledModel {
     type: string;
     medicalRecord: string;
     observation: ObservationModel;
+    id: number;
 
     constructor() {
         this.idClerk = '';
@@ -35,6 +36,7 @@ export class CalledModel {
         this.type = '';
         this.medicalRecord = '';
         this.observation = new ObservationModel();
+        this.id = 0;
     }
 }
 
