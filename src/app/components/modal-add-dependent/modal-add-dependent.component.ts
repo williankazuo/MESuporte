@@ -8,6 +8,12 @@ import { DependentService } from 'src/app/@core/services/dependents/dependent.se
 import { ModalAlert } from 'src/app/@core/models/modal-alert/modal-alert.model';
 import { ModalAlertService } from 'src/app/@core/services/modal-alert/modal-alert.service';
 import { DocumentType } from 'src/app/@core/consts/documentType/documentType.const';
+import { UserRegistrationModel } from 'src/app/@core/models/form-registration-data/user-form.model';
+import { AutomaticOBSAddDependent, AutomaticSubject } from 'src/app/@core/consts/observation/automatic-observation.const';
+import { CallActionService } from 'src/app/@core/services/called/call-action.service';
+import { AuthenticationService } from 'src/app/@core/services/authentication/login.service';
+import { UserModel } from 'src/app/@core/models/login/user.model';
+import { SubjectModel } from 'src/app/@core/models/new-called/new-called.model';
 
 @Component({
   selector: 'app-modal-add-dependent',
@@ -21,19 +27,25 @@ export class ModalAddDependentComponent implements OnInit {
   public newDependent = new NewDependentModel();
   public birthDate = '';
   public genderEnum = GenderEnumSIAF;
+  private patient = new UserRegistrationModel();
+  private currentUser: UserModel;
 
   constructor(
     private _modalAddDependentService: ModalAddDependentService,
     private _modalDependentService: ModalDependentService,
     private _dependentService: DependentService,
-    private _modalAlertService: ModalAlertService
+    private _modalAlertService: ModalAlertService,
+    private _callActionService: CallActionService,
+    private _authenticationService: AuthenticationService
   ) { }
 
   ngOnInit() {
     this._modalAddDependentService.$openAlert.subscribe(data => {
       this.open = data.open;
       this.idTableHolder = data.idTabelaTitular;
+      this.patient = data.patient;
     });
+    this.currentUser = this._authenticationService.getCurrentUser();
   }
 
   public receiveImages(images: Array<FileModel>): void {
@@ -45,7 +57,7 @@ export class ModalAddDependentComponent implements OnInit {
    * Abrir o modal anterior e fechar este atual.
    */
   public backModal(): void {
-    this._modalDependentService.openModalDependent(this.idTableHolder);
+    this._modalDependentService.openModalDependent(this.idTableHolder, this.patient);
     this.open = false;
   }
 
@@ -64,6 +76,7 @@ export class ModalAddDependentComponent implements OnInit {
       this.open = false;
       this.configureSuccess();
       this._modalAlertService.openAlertModal();
+      this.checkCalls(this.patient);
     }, error => {
       this.open = false;
       this.configureError();
@@ -98,6 +111,19 @@ export class ModalAddDependentComponent implements OnInit {
       this._modalAlertService.closeAlertModal();
     };
     this._modalAlertService.setAlertConfiguration(alertConfig);
+  }
+
+
+  /**
+   * Método responsável por verificar se existe um chamado existente, caso não exista ele cria um com obs automática.
+   * Essa ação serve para que o atendente não saia da tela sem que nada fosse registrado. Então, se for a primeira ação
+   * do atendente, deve ser registrado um chamado.
+   */
+  private checkCalls(patient: UserRegistrationModel): void {
+    const observation = AutomaticOBSAddDependent;
+    observation.titles = new Array<SubjectModel>();
+    observation.titles.push(AutomaticSubject);
+    this._callActionService.checkCall(this.currentUser, patient, observation);
   }
 
 

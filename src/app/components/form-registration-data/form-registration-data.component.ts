@@ -9,13 +9,12 @@ import { ModalDependentService } from 'src/app/@core/services/modal-dependent/mo
 import { GenderSiaf } from 'src/app/@core/consts/gender/gender-siaf.const';
 import { GenderME } from 'src/app/@core/consts/gender/gender-me.const';
 import { CalledService } from 'src/app/@core/services/called/called.service';
-import { CalledModel } from 'src/app/@core/models/new-called/new-called.model';
+import { CalledModel, ObservationModel, SubjectModel } from 'src/app/@core/models/new-called/new-called.model';
 import { DateUtilService } from 'src/app/@core/services/utils/date.service';
 import { CallActionService } from 'src/app/@core/services/called/call-action.service';
-import { CallStatus } from 'src/app/@core/enums/ended-calls/call-status.enum';
-import { CallType } from 'src/app/@core/consts/ended-calls/callType.const';
 import { AuthenticationService } from 'src/app/@core/services/authentication/login.service';
 import { UserModel } from 'src/app/@core/models/login/user.model';
+import { AutomaticOBSUpdateData, AutomaticSubject } from 'src/app/@core/consts/observation/automatic-observation.const';
 
 @Component({
   selector: 'app-form-registration-data',
@@ -64,6 +63,8 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
 
   ngOnInit() {
     this._patientDataService.emitterSearch.subscribe(data => {
+      // Zerar o id do chamado, para toda pesquisa realizada. Pois ao pesquisar um novo paciente, um novo chamado deve ser registrado.
+      this._callActionService.setIdCall(0);
       if (data[0] === SearchType.cpf) {
         this.getPatientDataByCPFSIAF(data[1]);
       } else if (data[0] === SearchType.passaporte) {
@@ -111,7 +112,7 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
    * Método responsável por buscar os dados do paciente por CPF no Meu Einstein.
    * @param cpf CPF do paciente.
    */
-  private getPatientDataByCPFME(cpf: string, foundSIAF: boolean) {
+  private getPatientDataByCPFME(cpf: string, foundSIAF: boolean): void {
     this._patientDataService.getByDocumentME(cpf).subscribe(response => {
       this.meUser = this.formatData(response);
       this.receiveMEData.emit(this.meUser);
@@ -165,7 +166,7 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
    * @param success Se houve sucesso na chamada.
    * @param foundSIAF Se encontrou algum paciente no SIAF.
    */
-  private messageAndModal(success: boolean, foundSIAF: boolean) {
+  private messageAndModal(success: boolean, foundSIAF: boolean): void {
     if (success) {
       if (!foundSIAF) {
         this.openNotFound('Paciente não encontrado no SIAF');
@@ -237,6 +238,7 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
       .subscribe(response => {
         this.configureSuccess();
         this._modalAlertService.openAlertModal();
+        this.checkCalls(meUser);
       }, error => {
         this.configureError(false);
         this._modalAlertService.openAlertModal();
@@ -246,7 +248,7 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
   /**
    * Método responsável por atualizar os dados do paciente no SIAF.
    */
-  public updateDataPatientSIAF() {
+  public updateDataPatientSIAF(): void {
     let siafUser = JSON.parse(JSON.stringify(this.siafUser));
     siafUser = this.revertData(siafUser);
     siafUser.gender = GenderEnumSIAF[siafUser.gender];
@@ -254,6 +256,7 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
       .subscribe(response => {
         this.configureSuccess();
         this._modalAlertService.openAlertModal();
+        this.checkCalls(siafUser);
       }, error => {
         this.configureError(true);
         this._modalAlertService.openAlertModal();
@@ -306,13 +309,13 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
    * Método responsável por abrir o modal de incluir um dependente
    */
   public attachDependent(): void {
-    this._modalDependentService.openModalDependent(this.siafUser.idTable.toString());
+    this._modalDependentService.openModalDependent(this.siafUser.idTable.toString(), this.siafUser);
   }
 
   /**
    * Método responsável por configurar o que vai ser exibido no modal de alerta.
    */
-  private configureModalNotFound(message: string) {
+  private configureModalNotFound(message: string): void {
     const alertConfig = new ModalAlert();
     alertConfig.title = 'Aviso';
     alertConfig.button1Text = 'OK';
@@ -326,9 +329,21 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
   /**
    * Método responsável por limpar o formulário.
    */
-  private clearForm() {
+  private clearForm(): void {
     this.meUser = new UserRegistrationModel();
     this.siafUser = new UserRegistrationModel();
+  }
+
+  /**
+   * Método responsável por verificar se existe um chamado existente, caso não exista ele cria um com obs automática.
+   * Essa ação serve para que o atendente não saia da tela sem que nada fosse registrado. Então, se for a primeira ação
+   * do atendente, deve ser registrado um chamado.
+   */
+  private checkCalls(patient: UserRegistrationModel): void {
+    const observation = AutomaticOBSUpdateData;
+    observation.titles = new Array<SubjectModel>();
+    observation.titles.push(AutomaticSubject);
+    this._callActionService.checkCall(this.currentUser, patient, observation);
   }
 
 

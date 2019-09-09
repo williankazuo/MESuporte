@@ -8,6 +8,12 @@ import { AttachDependentModel } from 'src/app/@core/models/dependent/attach-depe
 import { ModalAlertService } from 'src/app/@core/services/modal-alert/modal-alert.service';
 import { ModalAlert } from 'src/app/@core/models/modal-alert/modal-alert.model';
 import { DateUtilService } from 'src/app/@core/services/utils/date.service';
+import { AutomaticOBSAttachDependent, AutomaticSubject } from 'src/app/@core/consts/observation/automatic-observation.const';
+import { AuthenticationService } from 'src/app/@core/services/authentication/login.service';
+import { UserModel } from 'src/app/@core/models/login/user.model';
+import { CallActionService } from 'src/app/@core/services/called/call-action.service';
+import { SubjectModel } from 'src/app/@core/models/new-called/new-called.model';
+import { UserRegistrationModel } from 'src/app/@core/models/form-registration-data/user-form.model';
 
 @Component({
   selector: 'app-modal-include-dependent',
@@ -21,20 +27,26 @@ export class ModalIncludeDependentComponent implements OnInit {
   public filter = new FilterDependent();
   public list = new ListDependentArray();
   public tableHeader = ['', 'Prontuário', 'Nome do Paciente', 'Nacionalidade', 'CPF', 'Passaporte', 'Nascimento', 'Sexo'];
+  private currentUser: UserModel;
+  private patient = new UserRegistrationModel();
 
   constructor(
     private _modalDependentService: ModalDependentService,
     private _addDependentService: ModalAddDependentService,
     private _dependentService: DependentService,
     private _modalAlertService: ModalAlertService,
-    private _dateUtilService: DateUtilService
+    private _dateUtilService: DateUtilService,
+    private _authenticationService: AuthenticationService,
+    private _callActionService: CallActionService
   ) { }
 
   ngOnInit() {
     this._modalDependentService.$openAlert.subscribe(data => {
       this.open = data.open;
       this.idTableHolder = data.idTabelaTitular;
+      this.patient = data.patient;
     });
+    this.currentUser = this._authenticationService.getCurrentUser();
   }
 
   /**
@@ -50,7 +62,7 @@ export class ModalIncludeDependentComponent implements OnInit {
    * Método responsável por abrir o modal de adicionar um novo dependente.
    */
   public addDependent(): void {
-    this._addDependentService.openModaAddDependent(this.idTableHolder);
+    this._addDependentService.openModaAddDependent(this.idTableHolder, this.patient);
     this.open = false;
   }
 
@@ -83,6 +95,7 @@ export class ModalIncludeDependentComponent implements OnInit {
       this.open = false;
       this.configureSuccess();
       this._modalAlertService.openAlertModal();
+      this.checkCalls(this.patient);
     }, error => {
       this.open = false;
       this.configureError();
@@ -129,6 +142,18 @@ export class ModalIncludeDependentComponent implements OnInit {
     this.idTableHolder = '';
     this.filter = new FilterDependent();
     this.list = new ListDependentArray();
+  }
+
+  /**
+   * Método responsável por verificar se existe um chamado existente, caso não exista ele cria um com obs automática.
+   * Essa ação serve para que o atendente não saia da tela sem que nada fosse registrado. Então, se for a primeira ação
+   * do atendente, deve ser registrado um chamado.
+   */
+  private checkCalls(patient: UserRegistrationModel): void {
+    const observation = AutomaticOBSAttachDependent;
+    observation.titles = new Array<SubjectModel>();
+    observation.titles.push(AutomaticSubject);
+    this._callActionService.checkCall(this.currentUser, patient, observation);
   }
 
 }
