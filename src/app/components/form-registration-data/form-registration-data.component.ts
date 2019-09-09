@@ -332,19 +332,6 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
   }
 
 
-  private checkCall(): void {
-    const idCall = this._callActionService.getIdCall();
-    if (!idCall) {
-      const call = new CalledModel();
-      call.nameClerk = this.currentUser.name;
-      call.namePatient = this.siafUser.name;
-      call.medicalRecord = this.siafUser.medicalRecord;
-      call.idStatus = CallStatus.Open;
-      call.type = CallType.Telefone;
-      this._calledService.registerCalled()
-    }
-  }
-
   /**
    * Finaliza a incrição do componente, quando o mesmo é 'destruido'
    */
