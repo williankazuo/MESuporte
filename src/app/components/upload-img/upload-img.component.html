@@ -21,7 +21,7 @@
       *ngFor="let image of previewImages; let i = index">
       <img class="container-upload__content--preview__group--img-preview" src="{{image.name}}"
         (click)="openPreview(item.number);">
-      <img class="container-upload__content--preview__group--remove-img pointer"
+      <img *ngIf="!_readonly"  class="container-upload__content--preview__group--remove-img pointer"
         src="../../../assets/images/upload/btn_x.png" (click)="deleteImage(index);">
     </div>
   </div>

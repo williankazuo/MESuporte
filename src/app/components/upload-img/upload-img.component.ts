@@ -18,6 +18,22 @@ export class UploadImgComponent implements OnInit, OnDestroy, AfterViewInit {
   /** Entrada de dados para maiores modais */
   @Input() bigger = false;
 
+  /** Propriedade responsavel por receber do componente pai as imagens que serão utilizadas no preview */
+  @Input()
+  set receivedImages(images: Array<string>) {
+    images.forEach((image: string) => {
+      this.previewImages.push(new PreviewFileModel(image));
+    });
+  }
+
+  /** Propriedade responsavel por controlar o modo leitura do componente */
+  @Input()
+  set readonly(readonly: boolean) {
+    this._readonly = readonly;
+  }
+
+  public _readonly: boolean;
+
   public previewImages: Array<PreviewFileModel>;
 
   private filesImages: Array<FileModel>;

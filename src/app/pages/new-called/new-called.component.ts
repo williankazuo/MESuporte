@@ -23,14 +23,19 @@ export class NewCalledComponent implements OnInit {
   @ViewChild('form', { static: false }) form: FormRegistrationDataComponent;
 
   public showName = '';
+
   public placeholder = 'Pesquise por CPF, Prontuário ou Passaporte...';
-  public readonly = false;
 
   private currentUser: UserModel;
   private siafUser: UserRegistrationModel;
   private meUser: UserRegistrationModel;
   private called: CalledModel;
   private images: UploadModel;
+
+  /** Propriedade para receber as imagens de um chamado especifico, recebe a lista de urls */
+  public receivedImagens: Array<string>;
+  /** Propriedade para controlar o modo leitura do componente e seus filhos */
+  public readonly = false;
 
   public requiredInformation: boolean;
   public requiredData: boolean;
@@ -48,7 +53,8 @@ export class NewCalledComponent implements OnInit {
       this.readonly = false;
       if (params['id']) {
         this.readonly = true;
-        this.getCalledById(params['id']);
+        // tslint:disable-next-line: radix
+        this.getCalledById(parseInt(params['id']));
       }
     });
 
@@ -61,12 +67,33 @@ export class NewCalledComponent implements OnInit {
     this.requiredData = false;
   }
 
-
+  /**
+   * Metodo responsavel por buscar um chamado expecifico por Id
+   * @param id id do chamado que esta sendo buscado
+   */
   private getCalledById(id: number): void {
     this._calledService.getCallById(id).subscribe((result: CalledModel) => {
       this.called = result;
       this.showName = this.called.namePatient;
+      // buscar imagens relacionadas
+      this.getImagesByCalledId(id);
+    }, error => {
+
     });
+  }
+
+  /**
+   * Método responsavel por buscar do serviço as imagens relacionadas a um chamado
+   * @param id Id do chamado que esta sendo chamado no serviço
+   */
+  private getImagesByCalledId(id: number): void {
+    this._calledService.getImagesById(id)
+      .subscribe((images: Array<string>) => {
+        this.receivedImagens = new Array<string>();
+        this.receivedImagens = images;
+      }, error => {
+        // tratar quando não receber uma foto
+      });
   }
 
 
