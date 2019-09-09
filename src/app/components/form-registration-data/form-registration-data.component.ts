@@ -11,6 +11,7 @@ import { GenderME } from 'src/app/@core/consts/gender/gender-me.const';
 import { CalledService } from 'src/app/@core/services/called/called.service';
 import { CalledModel } from 'src/app/@core/models/new-called/new-called.model';
 import { DateUtilService } from 'src/app/@core/services/utils/date.service';
+import { ResultForm } from 'src/app/@core/consts/result-form/resultForm.const';
 
 @Component({
   selector: 'app-form-registration-data',
@@ -230,10 +231,10 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
     meUser = this.revertData(meUser);
     this._patientDataService.updateDataME(meUser)
       .subscribe(response => {
-        this.configureSuccess();
+        this.configureSuccess(ResultForm.sucessME);
         this._modalAlertService.openAlertModal();
       }, error => {
-        this.configureError(false);
+        this.configureError(false, ResultForm.errorMe);
         this._modalAlertService.openAlertModal();
       });
   }
@@ -247,10 +248,10 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
     siafUser.gender = GenderEnumSIAF[siafUser.gender];
     this._patientDataService.updateDataSIAF(siafUser)
       .subscribe(response => {
-        this.configureSuccess();
+        this.configureSuccess(ResultForm.sucessSiaf);
         this._modalAlertService.openAlertModal();
       }, error => {
-        this.configureError(true);
+        this.configureError(true, ResultForm.errorSiaf);
         this._modalAlertService.openAlertModal();
       });
   }
@@ -258,9 +259,9 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
   /**
    * Método responsável por configurar o modal de alerta de sucesso com imagem.
    */
-  public configureSuccess(): void {
+  public configureSuccess(title: string): void {
     const alertConfig = new ModalAlert();
-    alertConfig.title = 'Dados atualizados com sucesso!';
+    alertConfig.title = title;
     alertConfig.button1Text = 'OK';
     alertConfig.image = '../../../assets/images/modal-alert/icon_ok.png';
     alertConfig.button1Action = () => {
@@ -272,9 +273,9 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
   /**
    * Método responsável por configurar o modal de alerta de erro com imagem. E tentar novamente chamando o método novamente.
    */
-  public configureError(siaf: boolean): void {
+  public configureError(siaf: boolean, title: string): void {
     const alertConfig = new ModalAlert();
-    alertConfig.title = 'Algo deu errado ao tentar atualizar os dados. Tente novamente.';
+    alertConfig.title = title;
     alertConfig.button1Text = 'Tentar novamente';
     alertConfig.image = '../../../assets/images/modal-alert/icon_error.png';
     alertConfig.button1Action = () => {

@@ -9,10 +9,10 @@
     <p class="text-title-error" *ngIf="errorSelect">Selecione o tipo</p>
   </div>
   <div class="container-search__group--input m-r-20">
-    <input *ngIf="selectedValue !== searchType.cpf" type="text" [placeholder]="placeholder" (keyup.enter)="search();"
+    <input *ngIf="selectedValue !== searchType.cpf" type="text" class="blur" [placeholder]="placeholder" (keyup.enter)="search()"
       [(ngModel)]="searchText" [disabled]="disableSearch">
     <img src="../../../assets/images/search/icon_lupa.png">
-    <input *ngIf="selectedValue === searchType.cpf" type="text" [placeholder]="placeholder" (keyup.enter)="search();"
+    <input *ngIf="selectedValue === searchType.cpf" type="text" class="blur" [placeholder]="placeholder" (keyup.enter)="search()"
       [(ngModel)]="searchText" [disabled]="disableSearch" cpf>
   </div>
   <div class="container-search__group--button">
