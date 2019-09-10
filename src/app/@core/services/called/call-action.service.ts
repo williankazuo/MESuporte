@@ -49,8 +49,6 @@ export class CallActionService {
             }, error => {
 
             });
-        } else {
-
         }
     }
 }
