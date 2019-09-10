@@ -51,6 +51,13 @@ export class CalledService {
     }
 
     /**
+     * Metodo responsavel por trazer as imagens relacionadas a um id expecifico de um chamado
+     */
+    public getImagesById(idCalled: number): Observable<Array<string>> {
+        return this.http.get<Array<string>>(API.callSystem + `/api/Called/image/${idCalled}`);
+    }
+
+    /**
      * Método responsavel por buscar os assuntos relacionados ao chamado
      */
     public getListCallSubject(): Observable<Array<SubjectModel>> {
