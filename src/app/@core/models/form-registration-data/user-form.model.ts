@@ -58,6 +58,7 @@ export class UserRegistrationModel {
     vip: boolean;
     idTable: number;
     descStatusSocial: string;
+    statusSocialDR: number;
 
     constructor() {
         this.id = '';
@@ -83,5 +84,6 @@ export class UserRegistrationModel {
         this.vip = false;
         this.idTable = 0;
         this.descStatusSocial = '';
+        this.statusSocialDR = 0;
     }
 }

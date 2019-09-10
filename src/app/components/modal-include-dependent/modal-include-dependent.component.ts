@@ -89,20 +89,37 @@ export class ModalIncludeDependentComponent implements OnInit {
    * Método responsável por vincular um dependente, e exibir as mensagens de sucesso ou erro.
    */
   public attachDependent(): void {
-    const attachDependent = new AttachDependentModel();
-    // tslint:disable-next-line: radix
-    attachDependent.pacienteDR = parseInt(this.idTableHolder);
-    attachDependent.pessoaDR = this.idTableDependent;
-    this._dependentService.attachDependent(attachDependent).subscribe(response => {
-      this.open = false;
-      this.configureSuccess();
-      this._modalAlertService.openAlertModal();
-      this.checkCalls(this.patient);
-    }, error => {
-      this.open = false;
-      this.configureError();
-      this._modalAlertService.openAlertModal();
+    // Buscar o dependente na lista de acordo com o dependente selecionado.
+    const dep = this.list.objeto.find(data => {
+      if (data.idTabela === this.idTableDependent) {
+        return data;
+      }
     });
+
+    // Transformar a data em date time
+    const dates = dep.dataNascimento.split('/');
+    const dateTime = `${dates[2]}-${dates[1]}-${dates[0]}T00:00:00`;
+
+    const age = this._dateUtilService.calculateAge(dateTime);
+    if (age < 18) {
+      const attachDependent = new AttachDependentModel();
+      // tslint:disable-next-line: radix
+      attachDependent.pacienteDR = parseInt(this.idTableHolder);
+      attachDependent.pessoaDR = this.idTableDependent;
+      this._dependentService.attachDependent(attachDependent).subscribe(response => {
+        this.open = false;
+        this.configureSuccess();
+        this._modalAlertService.openAlertModal();
+        this.checkCalls(this.patient);
+      }, error => {
+        this.open = false;
+        this.configureError();
+        this._modalAlertService.openAlertModal();
+      });
+    } else {
+      this.configureNotPossible();
+      this._modalAlertService.openAlertModal();
+    }
   }
 
 
@@ -129,6 +146,21 @@ export class ModalIncludeDependentComponent implements OnInit {
     alertConfig.title = 'Algo deu errado no vínculo de dependente. Tente novamente.';
     alertConfig.button1Text = 'Tentar novamente';
     alertConfig.image = '../../../assets/images/modal-alert/icon_error.png';
+    alertConfig.button1Action = () => {
+      this.open = true;
+      this._modalAlertService.closeAlertModal();
+    };
+    this._modalAlertService.setAlertConfiguration(alertConfig);
+  }
+
+  /**
+   * Método responsável por configurar o alerta de não foi possível realizar um vínculo.
+   */
+  public configureNotPossible(): void {
+    const alertConfig = new ModalAlert();
+    alertConfig.title = 'Aviso';
+    alertConfig.button1Text = 'OK';
+    alertConfig.text = 'Não é possível víncular um dependente maior de 18 anos.'
     alertConfig.button1Action = () => {
       this.open = true;
       this._modalAlertService.closeAlertModal();

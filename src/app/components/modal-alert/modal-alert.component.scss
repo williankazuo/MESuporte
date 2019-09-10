@@ -1,18 +1,15 @@
-@import '../../../assets/scss/abstract/variables';
-@import '../../../assets/scss/abstract/mixins';
+@import "../../../assets/scss/abstract/variables";
+@import "../../../assets/scss/abstract/mixins";
 
 .container-alert {
   @include align(true, true, fixed);
-  z-index: $zindex-modal;
+  z-index: $zindex-alert;
   background-color: $color-white;
   padding: 30px;
 
   box-shadow: 0px 19px 38px $color-shadow;
 
   &__group {
-
-
-
     &__content {
       &--close {
         position: absolute;

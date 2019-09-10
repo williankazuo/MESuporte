@@ -204,9 +204,8 @@
 
   <div *ngIf="!readonly" class="container-form-data__group--button d-flex justify-content-center m-t-40">
     <div class="container-form-data__group--button__container">
-      <!-- <button class="btn btn--white" [disabled]="readonly || (!meUser.medicalRecord && !siafUser.medicalRecord)"
-        (click)="attachDependent();">Vincular dependente</button> -->
-      <button class="btn btn--white" (click)="attachDependent();">Vincular dependente</button>
+      <button class="btn btn--white" [disabled]="readonly || (!meUser.medicalRecord && !siafUser.medicalRecord)"
+        (click)="attachDependent();">Vincular dependente</button>
     </div>
   </div>
 </div>
