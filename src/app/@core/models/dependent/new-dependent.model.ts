@@ -35,3 +35,17 @@ export class NewDependentModel {
         this.idTableHolder = 0;
     }
 }
+
+export class ErrorDependentModel {
+    name: boolean;
+    birthDate: boolean;
+    documentNumber: boolean;
+    sex: boolean;
+
+    constructor() {
+        this.name = false;
+        this.birthDate = false;
+        this.documentNumber = false;
+        this.sex = false;
+    }
+}
