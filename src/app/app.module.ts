@@ -21,6 +21,7 @@ import { ValidateCPFService } from './@core/services/utils/validatecpf.service';
 import { DependentService } from './@core/services/dependents/dependent.service';
 import { CPFMaskService } from './@core/services/utils/cpfmask.service';
 import { DateUtilService } from './@core/services/utils/date.service';
+import { CallActionService } from './@core/services/called/call-action.service';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { DateUtilService } from './@core/services/utils/date.service';
     DependentService,
     CPFMaskService,
     DateUtilService,
+    CallActionService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

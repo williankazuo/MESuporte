@@ -22,4 +22,21 @@ export class DateUtilService {
         }
         return dateString;
     }
+
+    /**
+     * Método responsável por converter a data em string e devolver a idade.
+     * @param dateString data em string que vem do backend.
+     */
+    public calculateAge(dateString: string) {
+        if (dateString && dateString !== '') {
+            const indexOf = dateString.indexOf('T');
+            if (indexOf === -1) {
+                dateString = dateString.concat('T00:00:00');
+            }
+            const dateTime = new Date(dateString);
+            const ageDifMs = Date.now() - dateTime.getTime();
+            const ageDate = new Date(ageDifMs);
+            return Math.abs(ageDate.getUTCFullYear() - 1970);
+        }
+    }
 }

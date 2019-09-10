@@ -8,6 +8,12 @@ import { AttachDependentModel } from 'src/app/@core/models/dependent/attach-depe
 import { ModalAlertService } from 'src/app/@core/services/modal-alert/modal-alert.service';
 import { ModalAlert } from 'src/app/@core/models/modal-alert/modal-alert.model';
 import { DateUtilService } from 'src/app/@core/services/utils/date.service';
+import { AutomaticOBSAttachDependent, AutomaticSubject } from 'src/app/@core/consts/observation/automatic-observation.const';
+import { AuthenticationService } from 'src/app/@core/services/authentication/login.service';
+import { UserModel } from 'src/app/@core/models/login/user.model';
+import { CallActionService } from 'src/app/@core/services/called/call-action.service';
+import { SubjectModel } from 'src/app/@core/models/new-called/new-called.model';
+import { UserRegistrationModel } from 'src/app/@core/models/form-registration-data/user-form.model';
 
 @Component({
   selector: 'app-modal-include-dependent',
@@ -21,6 +27,8 @@ export class ModalIncludeDependentComponent implements OnInit {
   public filter = new FilterDependent();
   public list = new ListDependentArray();
   public tableHeader = ['', 'Prontuário', 'Nome do Paciente', 'Nacionalidade', 'CPF', 'Passaporte', 'Nascimento', 'Sexo'];
+  private currentUser: UserModel;
+  private patient = new UserRegistrationModel();
   public search: boolean;
 
   constructor(
@@ -28,14 +36,18 @@ export class ModalIncludeDependentComponent implements OnInit {
     private _addDependentService: ModalAddDependentService,
     private _dependentService: DependentService,
     private _modalAlertService: ModalAlertService,
-    private _dateUtilService: DateUtilService
+    private _dateUtilService: DateUtilService,
+    private _authenticationService: AuthenticationService,
+    private _callActionService: CallActionService
   ) { }
 
   ngOnInit() {
     this._modalDependentService.$openAlert.subscribe(data => {
       this.open = data.open;
       this.idTableHolder = data.idTabelaTitular;
+      this.patient = data.patient;
     });
+    this.currentUser = this._authenticationService.getCurrentUser();
   }
 
   /**
@@ -51,7 +63,7 @@ export class ModalIncludeDependentComponent implements OnInit {
    * Método responsável por abrir o modal de adicionar um novo dependente.
    */
   public addDependent(): void {
-    this._addDependentService.openModaAddDependent(this.idTableHolder);
+    this._addDependentService.openModaAddDependent(this.idTableHolder, this.patient);
     this.open = false;
   }
 
@@ -77,19 +89,37 @@ export class ModalIncludeDependentComponent implements OnInit {
    * Método responsável por vincular um dependente, e exibir as mensagens de sucesso ou erro.
    */
   public attachDependent(): void {
-    const attachDependent = new AttachDependentModel();
-    // tslint:disable-next-line: radix
-    attachDependent.pacienteDR = parseInt(this.idTableHolder);
-    attachDependent.pessoaDR = this.idTableDependent;
-    this._dependentService.attachDependent(attachDependent).subscribe(response => {
-      this.open = false;
-      this.configureSuccess();
-      this._modalAlertService.openAlertModal();
-    }, error => {
-      this.open = false;
-      this.configureError();
-      this._modalAlertService.openAlertModal();
+    // Buscar o dependente na lista de acordo com o dependente selecionado.
+    const dep = this.list.objeto.find(data => {
+      if (data.idTabela === this.idTableDependent) {
+        return data;
+      }
     });
+
+    // Transformar a data em date time
+    const dates = dep.dataNascimento.split('/');
+    const dateTime = `${dates[2]}-${dates[1]}-${dates[0]}T00:00:00`;
+
+    const age = this._dateUtilService.calculateAge(dateTime);
+    if (age < 18) {
+      const attachDependent = new AttachDependentModel();
+      // tslint:disable-next-line: radix
+      attachDependent.pacienteDR = parseInt(this.idTableHolder);
+      attachDependent.pessoaDR = this.idTableDependent;
+      this._dependentService.attachDependent(attachDependent).subscribe(response => {
+        this.open = false;
+        this.configureSuccess();
+        this._modalAlertService.openAlertModal();
+        this.checkCalls(this.patient);
+      }, error => {
+        this.open = false;
+        this.configureError();
+        this._modalAlertService.openAlertModal();
+      });
+    } else {
+      this.configureNotPossible();
+      this._modalAlertService.openAlertModal();
+    }
   }
 
 
@@ -98,7 +128,7 @@ export class ModalIncludeDependentComponent implements OnInit {
    */
   public configureSuccess(): void {
     const alertConfig = new ModalAlert();
-    alertConfig.title = 'Sua solicitação de vínculo de dependente foi realizado com sucesso!';
+    alertConfig.title = 'Vínculo de dependente foi realizado com sucesso!';
     alertConfig.button1Text = 'OK';
     alertConfig.image = '../../../assets/images/modal-alert/icon_ok.png';
     alertConfig.button1Action = () => {
@@ -124,6 +154,21 @@ export class ModalIncludeDependentComponent implements OnInit {
   }
 
   /**
+   * Método responsável por configurar o alerta de não foi possível realizar um vínculo.
+   */
+  public configureNotPossible(): void {
+    const alertConfig = new ModalAlert();
+    alertConfig.title = 'Aviso';
+    alertConfig.button1Text = 'OK';
+    alertConfig.text = 'Não é possível víncular um dependente maior de 18 anos.'
+    alertConfig.button1Action = () => {
+      this.open = true;
+      this._modalAlertService.closeAlertModal();
+    };
+    this._modalAlertService.setAlertConfiguration(alertConfig);
+  }
+
+  /**
    * Método responsável por resetar os filtros e a lista filtrada.
    */
   public resetForm(): void {
@@ -131,6 +176,18 @@ export class ModalIncludeDependentComponent implements OnInit {
     this.idTableHolder = '';
     this.filter = new FilterDependent();
     this.list = new ListDependentArray();
+  }
+
+  /**
+   * Método responsável por verificar se existe um chamado existente, caso não exista ele cria um com obs automática.
+   * Essa ação serve para que o atendente não saia da tela sem que nada fosse registrado. Então, se for a primeira ação
+   * do atendente, deve ser registrado um chamado.
+   */
+  private checkCalls(patient: UserRegistrationModel): void {
+    const observation = AutomaticOBSAttachDependent;
+    observation.titles = new Array<SubjectModel>();
+    observation.titles.push(AutomaticSubject);
+    this._callActionService.checkCall(this.currentUser, patient, observation);
   }
 
 }

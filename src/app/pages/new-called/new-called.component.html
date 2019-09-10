@@ -1,43 +1,43 @@
 <article class="container__called row">
 
-    <div class="container__called--new-called grid-lg-5">
-        <app-call-information (receivedCallInformationData)="receivedCallInformationData($event)"
-            (receivedImagesInformationData)="receivedImagesInformationData($event)" [receivedCalled]="called"
-            [receivedImages]="receivedImagens" [required]="requiredInformation" [readonly]="readonly">
-        </app-call-information>
+  <div class="container__called--new-called grid-lg-5">
+    <app-call-information (receivedCallInformationData)="receivedCallInformationData($event)"
+      (receivedImagesInformationData)="receivedImagesInformationData($event)" [receivedCalled]="called"
+      [receivedImages]="receivedImagens" [required]="requiredInformation" [readonly]="readonly">
+    </app-call-information>
+  </div>
+
+  <div class="container__called--new-called grid-lg-7 p-a-20" [ngClass]="readonly ? 'm-t-30' : 'm-b-56'">
+    <div class="container__called--new-called__group--data">
+      <div *ngIf="!readonly" class="container__called--new-called__group--data__content--search m-b-20">
+        <app-search [select]="true" [placeholder]="placeholder" (receiveText)="receiveText($event);">
+        </app-search>
+      </div>
+
+      <div class="container__called--new-called__group--data__content--personal p-b-20">
+        <span class="title-above-search"><strong>Dados Pessoais</strong> do Paciente</span>
+        <span class="title-name m-t-10">{{showName}}</span>
+        <p *ngIf="requiredData && !((meUser && meUser.medicalRecord.length > 0 ) || (sghUser && sghUser.medicalRecord.length > 0))"
+          class="text-title-error">
+          Pesquise um paciente para vincular ao chamado.
+        </p>
+      </div>
+
+      <div class="container__called--new-called__group--data__content--form m-t-20">
+        <app-form-registration-data #form (receiveMEData)="receiveMEData($event)"
+          (receiveSIAFData)="receiveSIAFData($event)" [receivedCalled]="called" [disableForm]="readonly">
+        </app-form-registration-data>
+      </div>
     </div>
+  </div>
 
-    <div class="container__called--new-called grid-lg-7 p-a-20" [ngClass]="readonly ? 'm-t-30' : 'm-b-56'">
-        <div class="container__called--new-called__group--data">
-            <div *ngIf="!readonly" class="container__called--new-called__group--data__content--search m-b-20">
-                <app-search [select]="true" [placeholder]="placeholder" (receiveText)="receiveText($event);">
-                </app-search>
-            </div>
-
-            <div class="container__called--new-called__group--data__content--personal p-b-20">
-                <span class="title-above-search"><strong>Dados Pessoais</strong> do Paciente</span>
-                <span class="title-name m-t-10">{{showName}}</span>
-                <p *ngIf="requiredData && !((meUser && meUser.medicalRecord.length > 0 ) || (sghUser && sghUser.medicalRecord.length > 0))"
-                    class="text-title-error">
-                    Pesquise um paciente para vincular ao chamado.
-                </p>
-            </div>
-
-            <div class="container__called--new-called__group--data__content--form m-t-20">
-                <app-form-registration-data #form (receiveMEData)="receiveMEData($event)"
-                    (receiveSIAFData)="receiveSIAFData($event)" [receivedCalled]="called" [disableForm]="readonly">
-                </app-form-registration-data>
-            </div>
-        </div>
+  <div *ngIf="!readonly"
+    class="container__called--new-called--container-fixed button__fixed text-align-center grid-lg-12">
+    <div class="container__called--new-called--container-fixed__button">
+      <button type="button" class="btn btn--default" (click)="registerCallInformation()">
+        Finalizar chamado
+      </button>
     </div>
-
-    <div *ngIf="!readonly"
-        class="container__called--new-called--container-fixed button__fixed text-align-center grid-lg-12">
-        <div class="container__called--new-called--container-fixed__button">
-            <button type="button" class="btn btn--default" (click)="registerCallInformation()">
-                Finalizar chamado
-            </button>
-        </div>
-    </div>
+  </div>
 
 </article>

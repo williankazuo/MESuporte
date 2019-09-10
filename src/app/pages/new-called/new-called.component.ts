@@ -12,6 +12,7 @@ import { CallType } from 'src/app/@core/consts/ended-calls/callType.const';
 import { CallStatus } from 'src/app/@core/enums/ended-calls/call-status.enum';
 import { CallReset } from 'src/app/@core/consts/ended-calls/callReset.const';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { CallActionService } from 'src/app/@core/services/called/call-action.service';
 import { Routes } from 'src/app/@core/consts/routes/routes.const';
 
 @Component({
@@ -50,6 +51,7 @@ export class NewCalledComponent implements OnInit {
     private _modalAlertService: ModalAlertService,
     private _calledService: CalledService,
     private _router: ActivatedRoute,
+    private _callActionService: CallActionService,
     private _navigate: Router
   ) { }
 
@@ -177,15 +179,32 @@ export class NewCalledComponent implements OnInit {
         this.called.medicalRecord = this.siafUser.medicalRecord;
         this.called.idStatus = CallStatus.Open;
         this.called.type = CallType.Telefone;
+        this.called.id = this._callActionService.getIdCall();
 
-        this._calledService.registerCalled(this.called)
-          .subscribe((result: any) => {
+        if (this.called.id === 0) {
+          this._calledService.registerCalled(this.called)
+            .subscribe((result: any) => {
+              this.configureSuccess();
+              this._modalAlertService.openAlertModal();
+
+              // salva as imagens relacionadas a esse chamado, caso exista imagens para ser salvas
+              if (this.images.images.length > 0) {
+                this.saveCallImages(result.idCalled);
+              }
+
+              this.resetForm();
+            }, error => {
+              this.configureError();
+              this._modalAlertService.openAlertModal();
+            });
+        } else {
+          this._calledService.updateCall(this.called).subscribe((result: any) => {
             this.configureSuccess();
             this._modalAlertService.openAlertModal();
 
             // salva as imagens relacionadas a esse chamado, caso exista imagens para ser salvas
             if (this.images.images.length > 0) {
-              this.saveCallImages(result.idCalled);
+              this.saveCallImages(this.called.id);
             }
 
             this.resetForm();
@@ -193,6 +212,7 @@ export class NewCalledComponent implements OnInit {
             this.configureError();
             this._modalAlertService.openAlertModal();
           });
+        }
       }
     }
   }
