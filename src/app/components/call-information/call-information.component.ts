@@ -25,6 +25,12 @@ export class CallInformationComponent implements OnInit, AfterViewInit, OnDestro
     }
   }
 
+  /** Propriedade responsavel por receber as imagens no modo leitura */
+  @Input()
+  set receivedImages(images: Array<string>) {
+    this.imagesPreview = images;
+  }
+
   /** Propriedade que controla a obrigatóriedade dos campos de input */
   @Input() required: boolean;
 
@@ -33,7 +39,11 @@ export class CallInformationComponent implements OnInit, AfterViewInit, OnDestro
   /** Propriedade para emitir as informações do chamado */
   @Output() receivedImagesInformationData = new EventEmitter<UploadModel>();
 
+  /** Propriedade responsavel por receber do backend as imagens */
+  public imagesPreview: Array<string>;
+
   private called: CalledModel;
+
   private images: UploadModel;
 
   public _readonly: boolean;
@@ -47,6 +57,7 @@ export class CallInformationComponent implements OnInit, AfterViewInit, OnDestro
   ngOnInit() {
     this.called = new CalledModel();
     this.images = new UploadModel();
+    this.imagesPreview = new Array<string>();
   }
 
   /**

@@ -3,7 +3,7 @@
     <div class="container__called--new-called grid-lg-5">
         <app-call-information (receivedCallInformationData)="receivedCallInformationData($event)"
             (receivedImagesInformationData)="receivedImagesInformationData($event)" [receivedCalled]="called"
-            [required]="requiredInformation" [readonly]="readonly">
+            [receivedImages]="receivedImagens" [required]="requiredInformation" [readonly]="readonly">
         </app-call-information>
     </div>
 
@@ -31,7 +31,8 @@
         </div>
     </div>
 
-    <div *ngIf="!readonly" class="container__called--new-called--container-fixed button__fixed text-align-center grid-lg-12">
+    <div *ngIf="!readonly"
+        class="container__called--new-called--container-fixed button__fixed text-align-center grid-lg-12">
         <div class="container__called--new-called--container-fixed__button">
             <button type="button" class="btn btn--default" (click)="registerCallInformation()">
                 Finalizar chamado
