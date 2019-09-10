@@ -29,6 +29,7 @@ export class ModalIncludeDependentComponent implements OnInit {
   public tableHeader = ['', 'Prontuário', 'Nome do Paciente', 'Nacionalidade', 'CPF', 'Passaporte', 'Nascimento', 'Sexo'];
   private currentUser: UserModel;
   private patient = new UserRegistrationModel();
+  public search: boolean;
 
   constructor(
     private _modalDependentService: ModalDependentService,
@@ -71,6 +72,7 @@ export class ModalIncludeDependentComponent implements OnInit {
    */
   public searchPatient(): void {
     this._dependentService.filterDependent(this.filter).subscribe(response => {
+      this.search = true;
       this.list = response;
       // Formatar as datas
       this.list.objeto.map(data => {

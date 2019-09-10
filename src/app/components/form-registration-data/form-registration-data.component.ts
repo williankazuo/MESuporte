@@ -15,6 +15,7 @@ import { CallActionService } from 'src/app/@core/services/called/call-action.ser
 import { AuthenticationService } from 'src/app/@core/services/authentication/login.service';
 import { UserModel } from 'src/app/@core/models/login/user.model';
 import { AutomaticOBSUpdateData, AutomaticSubject } from 'src/app/@core/consts/observation/automatic-observation.const';
+import { ResultForm } from 'src/app/@core/consts/result-form/resultForm.const';
 
 @Component({
   selector: 'app-form-registration-data',
@@ -23,19 +24,21 @@ import { AutomaticOBSUpdateData, AutomaticSubject } from 'src/app/@core/consts/o
 })
 export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  // tslint:disable-next-line: no-input-rename
+  @Input('disableForm')
+  set disabled(disabled: boolean) {
+    this.readonly = disabled;
+  }
   /** Propriedade para receber do componente pai as informações de um chamado */
   @Input()
   set receivedCalled(receivedCalled: CalledModel) {
     if (receivedCalled.medicalRecord && receivedCalled.namePatient) {
-      this.disabled = true;
       this.getPatientDataByMedicalRecordSIAF(receivedCalled.medicalRecord);
     }
   }
 
   @Output() receiveMEData = new EventEmitter();
   @Output() receiveSIAFData = new EventEmitter();
-  // tslint:disable-next-line: no-input-rename
-  @Input('disableForm') disabled = false;
 
   public siafUser = new UserRegistrationModel();
   public meUser = new UserRegistrationModel();
@@ -48,6 +51,8 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
 
   private unsubscribe: any;
   private currentUser: UserModel;
+
+  public readonly: boolean;
 
   constructor(
     private _patientDataService: PatientDataService,
@@ -236,11 +241,11 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
     meUser = this.revertData(meUser);
     this._patientDataService.updateDataME(meUser)
       .subscribe(response => {
-        this.configureSuccess();
+        this.configureSuccess(ResultForm.sucessME);
         this._modalAlertService.openAlertModal();
         this.checkCalls(meUser);
       }, error => {
-        this.configureError(false);
+        this.configureError(false, ResultForm.errorMe);
         this._modalAlertService.openAlertModal();
       });
   }
@@ -254,11 +259,11 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
     siafUser.gender = GenderEnumSIAF[siafUser.gender];
     this._patientDataService.updateDataSIAF(siafUser)
       .subscribe(response => {
-        this.configureSuccess();
+        this.configureSuccess(ResultForm.sucessSiaf);
         this._modalAlertService.openAlertModal();
         this.checkCalls(siafUser);
       }, error => {
-        this.configureError(true);
+        this.configureError(true, ResultForm.errorSiaf);
         this._modalAlertService.openAlertModal();
       });
   }
@@ -266,9 +271,9 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
   /**
    * Método responsável por configurar o modal de alerta de sucesso com imagem.
    */
-  public configureSuccess(): void {
+  public configureSuccess(title: string): void {
     const alertConfig = new ModalAlert();
-    alertConfig.title = 'Dados atualizados com sucesso!';
+    alertConfig.title = title;
     alertConfig.button1Text = 'OK';
     alertConfig.image = '../../../assets/images/modal-alert/icon_ok.png';
     alertConfig.button1Action = () => {
@@ -280,9 +285,9 @@ export class FormRegistrationDataComponent implements OnInit, AfterViewInit, OnD
   /**
    * Método responsável por configurar o modal de alerta de erro com imagem. E tentar novamente chamando o método novamente.
    */
-  public configureError(siaf: boolean): void {
+  public configureError(siaf: boolean, title: string): void {
     const alertConfig = new ModalAlert();
-    alertConfig.title = 'Algo deu errado ao tentar atualizar os dados. Tente novamente.';
+    alertConfig.title = title;
     alertConfig.button1Text = 'Tentar novamente';
     alertConfig.image = '../../../assets/images/modal-alert/icon_error.png';
     alertConfig.button1Action = () => {

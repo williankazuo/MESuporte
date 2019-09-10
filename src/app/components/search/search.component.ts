@@ -53,9 +53,20 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
       if (this.selectedValue === SearchType.cpf) {
         text = this._cpfMaskService.removeCPFMask(text);
       }
+      this.removeBlur();
       this.receiveText.emit([this.selectedValue, text]);
     } else {
       this.receiveText.emit(text);
+    }
+  }
+
+  /**
+   * Metodo responsavel por remover o foco dos campos de busca.
+   */
+  private removeBlur(): void {
+    const resetInput: any = document.getElementsByClassName('blur');
+    for (let i = 0; i <= resetInput.length - 1; i++) {
+      resetInput[i].blur();
     }
   }
 
