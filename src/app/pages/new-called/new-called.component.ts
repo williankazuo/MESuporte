@@ -11,7 +11,8 @@ import { UserModel } from 'src/app/@core/models/login/user.model';
 import { CallType } from 'src/app/@core/consts/ended-calls/callType.const';
 import { CallStatus } from 'src/app/@core/enums/ended-calls/call-status.enum';
 import { CallReset } from 'src/app/@core/consts/ended-calls/callReset.const';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Routes } from 'src/app/@core/consts/routes/routes.const';
 
 @Component({
   selector: 'app-new-called',
@@ -25,6 +26,8 @@ export class NewCalledComponent implements OnInit {
   public showName = '';
 
   public placeholder = 'Pesquise por CPF, Prontuário ou Passaporte...';
+
+  private id: number;
 
   private currentUser: UserModel;
   private siafUser: UserRegistrationModel;
@@ -40,18 +43,21 @@ export class NewCalledComponent implements OnInit {
   public requiredInformation: boolean;
   public requiredData: boolean;
 
+
   constructor(
     private _authenticationService: AuthenticationService,
     private _patientDataService: PatientDataService,
     private _modalAlertService: ModalAlertService,
     private _calledService: CalledService,
-    private _router: ActivatedRoute
+    private _router: ActivatedRoute,
+    private _navigate: Router
   ) { }
 
   ngOnInit() {
     this._router.params.subscribe((params: Params) => {
       this.readonly = false;
       if (params['id']) {
+        this.id = params['id'];
         this.readonly = true;
         // tslint:disable-next-line: radix
         this.getCalledById(parseInt(params['id']));
@@ -78,7 +84,10 @@ export class NewCalledComponent implements OnInit {
       // buscar imagens relacionadas
       this.getImagesByCalledId(id);
     }, error => {
-
+      if (error.status === 400) {
+        this.configureErrorGetCalled();
+        this._modalAlertService.openAlertModal();
+      }
     });
   }
 
@@ -92,7 +101,10 @@ export class NewCalledComponent implements OnInit {
         this.receivedImagens = new Array<string>();
         this.receivedImagens = images;
       }, error => {
-        // tratar quando não receber uma foto
+        if (error.status === 500) {
+          this.configureErrorGetImages();
+          this._modalAlertService.openAlertModal();
+        }
       });
   }
 
@@ -234,6 +246,36 @@ export class NewCalledComponent implements OnInit {
     alertConfig.image = '../../../assets/images/modal-alert/icon_error.png';
     alertConfig.button1Action = () => {
       this.registerCallInformation();
+    };
+    this._modalAlertService.setAlertConfiguration(alertConfig);
+  }
+
+  /**
+   * Método responsável por configurar o modal de alerta de erro com imagem. E tentar novamente chamando o método novamente.
+   */
+  public configureErrorGetCalled() {
+    const alertConfig = new ModalAlert();
+    alertConfig.title = 'Chamado não encontrado. Tente buscar novamente ';
+    alertConfig.button1Text = 'Buscar novamente';
+    alertConfig.image = '../../../assets/images/modal-alert/icon_error.png';
+    alertConfig.button1Action = () => {
+      this._modalAlertService.closeAlertModal();
+      this._navigate.navigate([Routes.ended_calls]);
+    };
+    this._modalAlertService.setAlertConfiguration(alertConfig);
+  }
+
+  /**
+   * Método responsável por configurar o modal de alerta de erro com imagem. E tentar novamente chamando o método novamente.
+   */
+  public configureErrorGetImages() {
+    const alertConfig = new ModalAlert();
+    alertConfig.title = 'Algo deu errado ao buscar as imagens do chamado. Tente novamente.';
+    alertConfig.button1Text = 'Tentar novamente';
+    alertConfig.image = '../../../assets/images/modal-alert/icon_error.png';
+    alertConfig.button1Action = () => {
+      this.getImagesByCalledId(this.id);
+      this._modalAlertService.closeAlertModal();
     };
     this._modalAlertService.setAlertConfiguration(alertConfig);
   }
