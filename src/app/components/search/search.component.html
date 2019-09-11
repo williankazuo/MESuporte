@@ -7,11 +7,11 @@
     </select>
   </div>
   <div class="container-search__group--input m-r-20">
-    <input *ngIf="selectedValue !== searchType.cpf" type="text" class="blur" [placeholder]="placeholder" (keyup.enter)="search()"
-      [(ngModel)]="searchText" [disabled]="disableSearch">
+    <input *ngIf="selectedValue !== searchType.cpf" type="text" class="blur" [placeholder]="placeholder"
+      (keyup.enter)="search()" [(ngModel)]="searchText" [disabled]="disableSearch">
     <img src="../../../assets/images/search/icon_lupa.png">
-    <input *ngIf="selectedValue === searchType.cpf" type="text" class="blur" [placeholder]="placeholder" (keyup.enter)="search()"
-      [(ngModel)]="searchText" [disabled]="disableSearch" cpf>
+    <input *ngIf="selectedValue === searchType.cpf" type="text" class="blur" [placeholder]="placeholder"
+      (keyup.enter)="search()" [(ngModel)]="searchText" [disabled]="disableSearch" cpf>
   </div>
   <div class="container-search__group--button">
     <button class="btn btn--default" (click)="search();" [disabled]="disableSearch">Pesquisar</button>
