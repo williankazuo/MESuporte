@@ -47,7 +47,6 @@ export class SearchComponent implements OnInit, AfterViewInit, OnDestroy {
    * Emite o campo de texto, e em caso de select box, emite o campo de texto e o valor do select.
    */
   public search(): void {
-    console.log(this.searchText);
     let text = JSON.parse(JSON.stringify(this.searchText));
     if (this.select === true) {
       this.errorSelect = false;

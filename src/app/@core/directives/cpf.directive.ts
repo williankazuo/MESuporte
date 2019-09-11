@@ -80,11 +80,13 @@ export class CPFDirective implements ControlValueAccessor, OnInit {
      * @param {any} _value
      */
     writeValue(_value: any): void {
-        console.log(this._el);
         this._el.nativeElement.value = _value;
     }
 
-    // Implementação da interface de desabilitado. Se essa interface não for implementada não funciona o disable com uma diretiva.
+    /**
+     * Implementação da interface de desabilitado. Se essa interface não for implementada não funciona o disable com uma diretiva.
+     * @param isDisabled desabilitado.
+     */
     setDisabledState(isDisabled: boolean): void {
         this._el.nativeElement.disabled = isDisabled;
     }
