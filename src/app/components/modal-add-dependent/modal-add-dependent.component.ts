@@ -72,7 +72,7 @@ export class ModalAddDependentComponent implements OnInit {
 
       const dependent = JSON.parse(JSON.stringify(this.newDependent)) as NewDependentModel;
 
-      if (this._dateUtilService.calculateAge(dependent.birthDate)) {
+      if (this._dateUtilService.calculateAge(this.birthDate)) {
         dependent.documentType = DocumentType.Cpf;
         dependent.documentNumber = dependent.documentNumber.replace(/[\D]/g, '');
         // tslint:disable-next-line: radix

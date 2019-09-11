@@ -1,9 +1,15 @@
 import { Directive, ElementRef, HostListener, Input, OnInit } from '@angular/core';
-import { ControlValueAccessor } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Directive({
     selector: '[cpf]',
+    providers: [{
+        provide: NG_VALUE_ACCESSOR,
+        useExisting: CPFDirective,
+        multi: true
+    }]
 })
+
 export class CPFDirective implements ControlValueAccessor, OnInit {
 
     onTouched: any;
@@ -40,6 +46,7 @@ export class CPFDirective implements ControlValueAccessor, OnInit {
             cpf = inicio + '.' + meio + '.' + fim + '-' + ultimo;
         }
         $event.target.value = cpf;
+        this.onChange(cpf);
     }
 
     constructor(
@@ -73,6 +80,12 @@ export class CPFDirective implements ControlValueAccessor, OnInit {
      * @param {any} _value
      */
     writeValue(_value: any): void {
+        console.log(this._el);
         this._el.nativeElement.value = _value;
+    }
+
+    // Implementação da interface de desabilitado. Se essa interface não for implementada não funciona o disable com uma diretiva.
+    setDisabledState(isDisabled: boolean): void {
+        this._el.nativeElement.disabled = isDisabled;
     }
 }

@@ -116,6 +116,7 @@ export class CalledSubjectsComponent implements OnInit, AfterViewInit, OnDestroy
    * @param {string} subject assunto que esta sendo adiconado ao chamado
    */
   public addNewSubject(subjectDescText: string): void {
+    subjectDescText = subjectDescText.trim();
     if (subjectDescText.length > 0) {
 
       const subjectCalled: SubjectModel = new SubjectModel();
