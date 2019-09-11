@@ -24,19 +24,23 @@ export class DateUtilService {
     }
 
     /**
-     * Método responsável por converter a data em string e devolver a idade.
+     * Método responsável por converter a data em string e devolver se é uma idade válida para adicionar um dependente.
      * @param dateString data em string que vem do backend.
      */
-    public calculateAge(dateString: string) {
+    public calculateAge(dateString: string): boolean {
         if (dateString && dateString !== '') {
-            const indexOf = dateString.indexOf('T');
-            if (indexOf === -1) {
-                dateString = dateString.concat('T00:00:00');
-            }
+            const dates = dateString.split('/');
+            dateString = `${dates[2]}-${dates[1]}-${dates[0]}T00:00:00`;
             const dateTime = new Date(dateString);
             const ageDifMs = Date.now() - dateTime.getTime();
             const ageDate = new Date(ageDifMs);
-            return Math.abs(ageDate.getUTCFullYear() - 1970);
+            const age = Math.abs(ageDate.getUTCFullYear() - 1970);
+
+            if (age < 18) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 }

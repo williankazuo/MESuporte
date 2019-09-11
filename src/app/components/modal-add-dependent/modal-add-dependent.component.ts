@@ -14,6 +14,7 @@ import { CallActionService } from 'src/app/@core/services/called/call-action.ser
 import { AuthenticationService } from 'src/app/@core/services/authentication/login.service';
 import { UserModel } from 'src/app/@core/models/login/user.model';
 import { SubjectModel } from 'src/app/@core/models/new-called/new-called.model';
+import { DateUtilService } from 'src/app/@core/services/utils/date.service';
 
 @Component({
   selector: 'app-modal-add-dependent',
@@ -37,7 +38,8 @@ export class ModalAddDependentComponent implements OnInit {
     private _dependentService: DependentService,
     private _modalAlertService: ModalAlertService,
     private _callActionService: CallActionService,
-    private _authenticationService: AuthenticationService
+    private _authenticationService: AuthenticationService,
+    private _dateUtilService: DateUtilService
   ) { }
 
   ngOnInit() {
@@ -67,23 +69,31 @@ export class ModalAddDependentComponent implements OnInit {
    */
   public addDependent(): void {
     if (this.validInformations()) {
+
       const dependent = JSON.parse(JSON.stringify(this.newDependent)) as NewDependentModel;
-      dependent.documentType = DocumentType.Cpf;
-      dependent.documentNumber = dependent.documentNumber.replace(/[\D]/g, '');
-      // tslint:disable-next-line: radix
-      dependent.idTableHolder = parseInt(this.idTableHolder);
-      const dates = this.birthDate.split('/');
-      dependent.birthDate = `${dates[2]}-${dates[1]}-${dates[0]}T00:00:00`;
-      this._dependentService.addDependent(dependent).subscribe(response => {
-        this.open = false;
-        this.configureSuccess();
+
+      if (this._dateUtilService.calculateAge(dependent.birthDate)) {
+        dependent.documentType = DocumentType.Cpf;
+        dependent.documentNumber = dependent.documentNumber.replace(/[\D]/g, '');
+        // tslint:disable-next-line: radix
+        dependent.idTableHolder = parseInt(this.idTableHolder);
+        const dates = this.birthDate.split('/');
+        dependent.birthDate = `${dates[2]}-${dates[1]}-${dates[0]}T00:00:00`;
+
+        this._dependentService.addDependent(dependent).subscribe(response => {
+          this.open = false;
+          this.configureSuccess();
+          this._modalAlertService.openAlertModal();
+          this.checkCalls(this.patient);
+        }, error => {
+          this.open = false;
+          this.configureError();
+          this._modalAlertService.openAlertModal();
+        });
+      } else {
+        this.configureNotPossible();
         this._modalAlertService.openAlertModal();
-        this.checkCalls(this.patient);
-      }, error => {
-        this.open = false;
-        this.configureError();
-        this._modalAlertService.openAlertModal();
-      });
+      }
     }
   }
 
@@ -146,5 +156,21 @@ export class ModalAddDependentComponent implements OnInit {
       }
     });
     return valid;
+  }
+
+  /**
+   * Método responsável por configurar o alerta de não foi possível realizar um vínculo.
+   */
+  public configureNotPossible(): void {
+    this.open = false;
+    const alertConfig = new ModalAlert();
+    alertConfig.title = 'Aviso';
+    alertConfig.button1Text = 'OK';
+    alertConfig.text = 'Não é possível víncular um dependente maior de 18 anos.';
+    alertConfig.button1Action = () => {
+      this.open = true;
+      this._modalAlertService.closeAlertModal();
+    };
+    this._modalAlertService.setAlertConfiguration(alertConfig);
   }
 }

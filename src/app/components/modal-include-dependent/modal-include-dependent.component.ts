@@ -96,12 +96,8 @@ export class ModalIncludeDependentComponent implements OnInit {
       }
     });
 
-    // Transformar a data em date time
-    const dates = dep.dataNascimento.split('/');
-    const dateTime = `${dates[2]}-${dates[1]}-${dates[0]}T00:00:00`;
-
-    const age = this._dateUtilService.calculateAge(dateTime);
-    if (age < 18) {
+    // Só pode vincular um dependente se ele for menor de 18 anos.
+    if (this._dateUtilService.calculateAge(dep.dataNascimento)) {
       const attachDependent = new AttachDependentModel();
       // tslint:disable-next-line: radix
       attachDependent.pacienteDR = parseInt(this.idTableHolder);
@@ -157,10 +153,11 @@ export class ModalIncludeDependentComponent implements OnInit {
    * Método responsável por configurar o alerta de não foi possível realizar um vínculo.
    */
   public configureNotPossible(): void {
+    this.open = false;
     const alertConfig = new ModalAlert();
     alertConfig.title = 'Aviso';
     alertConfig.button1Text = 'OK';
-    alertConfig.text = 'Não é possível víncular um dependente maior de 18 anos.'
+    alertConfig.text = 'Não é possível víncular um dependente maior de 18 anos.';
     alertConfig.button1Action = () => {
       this.open = true;
       this._modalAlertService.closeAlertModal();
